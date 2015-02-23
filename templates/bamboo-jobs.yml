@@ -1,0 +1,18 @@
+properties: (( merge ))
+
+jobs:
+- name: bamboo-server
+  template: bamboo-server
+  instances: 1
+  resource_pool: default
+  persistent_disk: 10240
+  networks:
+  - name: (( properties.bamboo.network ))
+    static_ips:
+    - 10.244.2.2
+- name: bamboo_agent
+  template: bamboo_agent
+  instances: 10
+  resource_pool: default
+  networks:
+  - name: (( properties.bamboo.network ))

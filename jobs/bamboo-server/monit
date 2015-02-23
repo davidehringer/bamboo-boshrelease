@@ -1,0 +1,5 @@
+check process bamboo-server
+  with pidfile /var/vcap/sys/run/bamboo-server/pid
+  start program "/var/vcap/jobs/bamboo-server/bin/ctl start" with timeout 180 seconds
+  stop program "/var/vcap/jobs/bamboo-server/bin/ctl stop"
+  group vcap

@@ -1,0 +1,19 @@
+---
+name: bamboo_agent
+templates:
+  ctl.erb: bin/ctl
+  bamboo-capabilities.properties: config/bamboo-capabilities.properties
+  bamboo-agent.cfg.xml: config/bamboo-agent.cfg.xml
+
+packages:
+- bamboo-agent-5.7.2
+- openjdk-1.7.0_71
+- openjdk-1.8.0_25
+- apache-maven-3.2.5
+
+properties:
+  server.ip:
+    description: The IP address of the Bamboo server
+  server.port:
+    description: The port the Bamboo server is running on
+    default: 8085

@@ -1,0 +1,5 @@
+check process bamboo_agent
+  with pidfile /var/vcap/sys/run/bamboo_agent/pid
+  start program "/var/vcap/jobs/bamboo_agent/bin/ctl start" with timeout 60 seconds
+  stop program "/var/vcap/jobs/bamboo_agent/bin/ctl stop"
+  group vcap

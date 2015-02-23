@@ -1,0 +1,41 @@
+#!/bin/bash
+
+set -e # exit immediately if a simple command exits with a non-zero status
+set -u # report the usage of uninitialized variables
+
+RUN_DIR=/var/vcap/sys/run/bamboo_agent
+LOG_DIR=/var/vcap/sys/log/bamboo_agent
+PIDFILE=${RUN_DIR}/pid
+
+case $1 in
+
+  start)
+    mkdir -p $RUN_DIR $LOG_DIR
+    chown -R vcap:vcap $RUN_DIR $LOG_DIR
+
+    echo $$ > $PIDFILE
+    chown vcap:vcap $PIDFILE
+
+    cd /var/vcap/packages/bamboo-agent-5.7.2
+
+    export PATH=/var/vcap/packages/openjdk-1.7.0_71/bin:$PATH
+    export JAVA_HOME=/var/vcap/packages/openjdk-1.7.0_71
+
+  
+    exec 2>&1 java -Dbamboo.home=/var/vcap/data/bamboo-agent -jar bamboo-agent-5.7.2.jar http://<%= p("server.ip") %>:<%= p("server.port") %>/agentServer/
+
+    ;;
+
+  stop)
+
+    PID=$(head -1 $PIDFILE)
+    kill -9 $PID
+
+    rm -f $PIDFILE
+
+    ;;
+
+  *)
+    echo "Usage: ctl {start|stop}" ;;
+
+esac

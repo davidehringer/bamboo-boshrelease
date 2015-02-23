@@ -1,0 +1,8 @@
+---
+name: bamboo-agent-5.7.2
+
+dependencies:
+- openjdk-1.7.0_71
+
+files:
+- bamboo-agent-5.7.2/bamboo-agent-5.7.2.jar

@@ -1,0 +1,7 @@
+---
+name: openjdk-1.8.0_25
+
+dependencies: []
+
+files:
+- openjdk-1.8.0_25/openjdk-1.8.0_25.tar.gz

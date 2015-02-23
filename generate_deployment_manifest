@@ -1,0 +1,14 @@
+#! /bin/bash
+
+templates=$(dirname $0)/templates
+
+infrastructure=$1
+
+shift
+
+spiff merge \
+  $templates/bamboo-template.yml \
+  $templates/bamboo-jobs.yml \
+  $templates/$infrastructure-networks.yml \
+  $templates/$infrastructure-resource-pools.yml \
+  $*

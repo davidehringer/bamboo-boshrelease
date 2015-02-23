@@ -1,0 +1,9 @@
+# abort script on any command that exits with a non zero value
+set -e
+
+cd ${BOSH_INSTALL_TARGET}
+cp ${BOSH_COMPILE_TARGET}/bamboo-agent-5.7.2/bamboo-agent-5.7.2.jar .
+if [[ $? != 0 ]] ; then
+  echo "Cannot copy Bamboo Agent"
+  exit 1
+fi

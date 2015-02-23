@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<configuration>
+	<buildWorkingDirectory>/var/vcap/data/bamboo-agent/xml-data/build-dir</buildWorkingDirectory>
+	<agentUuid>868bb704-f207-470a-a21b-8b3846b1357b</agentUuid>
+	<agentDefinition>
+	<id>360449</id>
+	<name>localhost</name>
+	</agentDefinition>
+</configuration>

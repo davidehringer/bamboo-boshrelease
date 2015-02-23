@@ -1,0 +1,59 @@
+#!/bin/bash
+
+set -e # exit immediately if a simple command exits with a non-zero status
+set -u # report the usage of uninitialized variables
+
+RUN_DIR=/var/vcap/sys/run/bamboo-server
+LOG_DIR=/var/vcap/sys/log/bamboo-server
+PIDFILE=${RUN_DIR}/pid
+
+cd /var/vcap/packages/atlassian-bamboo-5.7.2
+
+export PATH=/var/vcap/packages/openjdk-1.7.0_71/bin:$PATH
+export JAVA_HOME=/var/vcap/packages/openjdk-1.7.0_71
+
+case $1 in
+
+  start)
+    mkdir -p $RUN_DIR $LOG_DIR
+    chown -R vcap:vcap $RUN_DIR $LOG_DIR
+
+    echo $$ > $PIDFILE
+    chown vcap:vcap $PIDFILE
+
+    cp /var/vcap/jobs/bamboo-server/config/bamboo-init.properties /var/vcap/packages/atlassian-bamboo-5.7.2/atlassian-bamboo-5.7.2/atlassian-bamboo/WEB-INF/classes/bamboo-init.properties
+
+    mkdir -p /var/vcap/store/bamboo-server
+    #cp -r bamboo-home/ /var/vcap/store/bamboo-server/
+
+    #cp /var/vcap/jobs/bamboo-server/config/bamboo.cfg.xml /var/vcap/store/bamboo-server
+
+    #if [ ! -d /var/vcap/store/bamboo-server/database ]; then
+        #mkdir -p /var/vcap/store/bamboo-server/database 
+        #cp /var/vcap/jobs/bamboo-server/database/* /var/vcap/store/bamboo-server/database 
+    #fi
+
+    # TODO
+    # We want to keep packages pristine, since tomcat is modified in place we stage it elsewhere.
+    # rm -rf /var/vcap/data/bamboo-server
+    # mkdir -p /var/vcap/data/bamboo-server
+    # cp -a /var/vcap/packages/uaa/tomcat /var/vcap/data/uaa
+
+    exec atlassian-bamboo-5.7.2/bin/start-bamboo.sh -fg
+
+    ;;
+
+  stop)
+
+    atlassian-bamboo-5.7.2/bin/stop-bamboo.sh
+
+    sleep 60s
+
+    rm -f $PIDFILE
+
+    ;;
+
+  *)
+    echo "Usage: ctl {start|stop}" ;;
+
+esac

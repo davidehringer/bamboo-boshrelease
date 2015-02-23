@@ -1,0 +1,2503 @@
+CREATE USER SA PASSWORD "" ADMIN
+/*C1*/SET SCHEMA PUBLIC
+CONNECT USER SA
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C2*/SET SCHEMA PUBLIC
+CONNECT USER SA
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+drop table DEPLOYMENT_RESULT if exists
+drop table AUTHOR if exists
+drop table DEPLOYMENT_VERSION_ITEM if exists
+drop table users if exists
+drop table ELASTIC_SCHEDULE if exists
+drop table USER_COMMENT if exists
+drop table TRUSTED_APPS if exists
+drop table TEST_CLASS_RESULT if exists
+drop table ACL_ENTRY if exists
+drop table VCS_LOCATION if exists
+drop table CAPABILITY if exists
+drop table AGENT_AUTHENTICATION if exists
+drop table BANDANA if exists
+drop table BUILDRESULTSUMMARY_CUSTOMDATA if exists
+drop table DEPLOYMENT_RESULT_CUSTOMDATA if exists
+drop table external_members if exists
+drop table BRS_LINKEDJIRAISSUES if exists
+drop table CHAIN_STAGE if exists
+drop table DEPLOYMENT_VERSION_ITEM_BA if exists
+drop table DEPLOYMENT_ENVIRONMENT if exists
+drop table TEST_CLASS if exists
+drop table EC2_IMAGE_SCRIPT if exists
+drop table CAPABILITY_SET if exists
+drop table AUDIT_LOG if exists
+drop table ACL_OBJECT_IDENTITY if exists
+drop table ELASTIC_IMAGE if exists
+drop table ARTIFACT_DEFINITION if exists
+drop table BRANCH_COMMIT_INFO if exists
+drop table REQUIREMENT if exists
+drop table groups if exists
+drop table DEP_VERSION_PLANRESULTKEYS if exists
+drop table DEPLOYMENT_ENV_VCS_LOCATION if exists
+drop table PLAN_VCS_LOCATION if exists
+drop table BUILD if exists
+drop table VARIABLE_BASELINE_ITEM if exists
+drop table DEPLOYMENT_PROJECT if exists
+drop table VARIABLE_DEFINITION if exists
+drop table REMEMBERME_TOKEN if exists
+drop table VARIABLE_SUBSTITUTION if exists
+drop table IMSERVER if exists
+drop table QUEUE if exists
+drop table DEPLOYMENT_VERSION_COMMIT if exists
+drop table CREDENTIALS if exists
+drop table RELEVANT_CHANGESETS if exists
+drop table VARIABLE_CONTEXT_BASELINE if exists
+drop table local_members if exists
+drop table TEST_CASE_RESULT if exists
+drop table CHAIN_STAGE_RESULT if exists
+drop table DEPLOYMENT_VERSION if exists
+drop table ARTIFACT_SUBSCRIPTION if exists
+drop table REPOSITORY_CHANGESET if exists
+drop table AGENT_ASSIGNMENT if exists
+drop table BUILD_DEFINITION if exists
+drop table TRUSTED_APPS_URLS if exists
+drop table BUILDRESULTSUMMARY_LABEL if exists
+drop table SCRIPT if exists
+drop table PLAN_DEPENDENCIES if exists
+drop table DEPLOYMENT_VERSION_NAMING if exists
+drop table PROJECT if exists
+drop table OS_PROPERTYENTRY if exists
+drop table AUTH_ATTEMPT_INFO if exists
+drop table VARIABLE_CONTEXT if exists
+drop table DEPLOYMENT_PROJECT_ITEM if exists
+drop table external_entities if exists
+drop table TEST_ERROR if exists
+drop table MERGE_RESULT if exists
+drop table STAGE_VARIABLE_CONTEXT if exists
+drop table NOTIFICATION_SETS if exists
+drop table USER_COMMIT if exists
+drop table LABEL if exists
+drop table BUILDRESULTSUMMARY if exists
+drop table COMMIT_FILES if exists
+drop table DEPLOYMENT_VARIABLE_SUBS if exists
+drop table NOTIFICATIONS if exists
+drop table BRS_CONSUMED_SUBSCRIPTION if exists
+drop table REQUIREMENT_SET if exists
+drop table TEST_CASE if exists
+drop table DEPLOYMENT_VERSION_CHANGESET if exists
+drop table PLAN_VCS_HISTORY if exists
+drop table VCS_BRANCH if exists
+drop table variablesToAutoIncrement if exists
+drop table TRUSTED_APPS_IPS if exists
+drop table password_reset_token if exists
+drop table DEPLOYMENT_VERSION_STATUS if exists
+drop table DEPLOYMENT_VERSION_JIRA_ISSUE if exists
+drop table BRS_ARTIFACT_LINK if exists
+drop table DEPLOYMENT_PROJECT_ITEM_BA if exists
+drop table ARTIFACT if exists
+drop table hibernate_unique_key if exists
+create table DEPLOYMENT_RESULT (DEPLOYMENT_RESULT_ID bigint not null, VERSION_ID bigint, VERSION_NAME varchar(255) not null, ENVIRONMENT_ID bigint, DEPLOYMENT_STATE varchar(255), LIFE_CYCLE_STATE varchar(255), STARTED_DATE timestamp, QUEUED_DATE timestamp, EXECUTED_DATE timestamp, FINISHED_DATE timestamp, AGENT_ID bigint, VARIABLE_CONTEXT_BASELINE_ID bigint, TRIGGER_REASON varchar(255), primary key (DEPLOYMENT_RESULT_ID))
+create table AUTHOR (AUTHOR_ID bigint not null, LINKED_USER_NAME varchar(255), AUTHOR_EMAIL varchar(255), AUTHOR_NAME varchar(255), primary key (AUTHOR_ID), unique (AUTHOR_NAME))
+create table DEPLOYMENT_VERSION_ITEM (DEPLOYMENT_VERSION_ITEM_ID bigint not null, DEPLOYMENT_VERSION_ID bigint, NAME varchar(255), primary key (DEPLOYMENT_VERSION_ITEM_ID))
+create table users (id bigint not null, name varchar(255) not null, password varchar(255), email varchar(255), created timestamp, fullname varchar(255), primary key (id))
+create table ELASTIC_SCHEDULE (SCHEDULE_ID bigint not null, CRON_EXP varchar(255), NUMBER_ACTIVE integer, ENABLED bit, ELASTIC_IMAGE bigint, COMPARISON bigint, primary key (SCHEDULE_ID))
+create table USER_COMMENT (COMMENT_ID bigint not null, CONTENT longvarchar, USER_NAME varchar(255), ENTITY_ID bigint, CREATED_DATE timestamp, UPDATED_DATE timestamp, primary key (COMMENT_ID))
+create table TRUSTED_APPS (TRUSTED_APPS_ID bigint not null, APP_ID varchar(255) not null, PUBLIC_KEY_CLOB longvarchar, APP_NAME varchar(255), TIMEOUT bigint not null, primary key (TRUSTED_APPS_ID), unique (APP_ID))
+create table TEST_CLASS_RESULT (TEST_CLASS_RESULT_ID bigint not null, TEST_CLASS_ID bigint, BUILDRESULTSUMMARY_ID bigint, DURATION bigint, FAILED_COUNT integer, SUCCESS_COUNT integer, primary key (TEST_CLASS_RESULT_ID))
+create table ACL_ENTRY (ID bigint not null, ACL_OBJECT_IDENTITY bigint, TYPE varchar(255), SID varchar(255), ACE_ORDER integer, MASK integer, GRANTING bit, AUDIT_SUCCESS bit, AUDIT_FAILURE bit, primary key (ID))
+create table VCS_LOCATION (VCS_LOCATION_ID bigint not null, NAME varchar(255) not null, DESCRIPTION varchar(255), PLUGIN_KEY varchar(4000) not null, XML_DEFINITION_DATA longvarchar, MARKED_FOR_DELETION bit not null, IS_GLOBAL bit not null, primary key (VCS_LOCATION_ID))
+create table CAPABILITY (CAPABILITY_ID bigint not null, KEY_IDENTIFIER varchar(255), VALUE varchar(4000), CAPABILITY_SET bigint, primary key (CAPABILITY_ID))
+create table AGENT_AUTHENTICATION (AUTHENTICATION_ID bigint not null, IP_ADDRESS varchar(255) not null, UUID varchar(255) not null, IS_APPROVED bit, primary key (AUTHENTICATION_ID), unique (UUID))
+create table BANDANA (BANDANA_ID bigint not null, BUILD_ID bigint, BANDANA_KEY varchar(255), SERIALIZED_DATA longvarchar, primary key (BANDANA_ID))
+create table BUILDRESULTSUMMARY_CUSTOMDATA (BUILDRESULTSUMMARY_ID bigint not null, CUSTOM_INFO_KEY varchar(255) not null, CUSTOM_INFO_VALUE longvarchar, primary key (BUILDRESULTSUMMARY_ID, CUSTOM_INFO_KEY))
+create table DEPLOYMENT_RESULT_CUSTOMDATA (DEPLOYMENT_RESULT_ID bigint not null, CUSTOM_INFO_VALUE longvarchar, CUSTOM_INFO_KEY varchar(255) not null, primary key (DEPLOYMENT_RESULT_ID, CUSTOM_INFO_KEY))
+create table external_members (extentityid bigint not null, groupid bigint not null, primary key (groupid, extentityid))
+create table BRS_LINKEDJIRAISSUES (LINKEDJIRAISSUE_ID bigint not null, BUILDRESULTSUMMARY_ID bigint, JIRA_ISSUE_KEY varchar(255), JIRA_ISSUE_LINK_TYPE integer, primary key (LINKEDJIRAISSUE_ID))
+create table CHAIN_STAGE (STAGE_ID bigint not null, CREATED_DATE timestamp, UPDATED_DATE timestamp, NAME varchar(255) not null, DESCRIPTION varchar(255), OPTIONAL_STAGE bit, MARKED_FOR_DELETION bit, BUILD_ID bigint not null, LIST_POSITION integer, primary key (STAGE_ID))
+create table DEPLOYMENT_VERSION_ITEM_BA (VERSION_BAM_ARTIFACT_ITEM_ID bigint not null, PLAN_KEY varchar(255) not null, BUILD_NUMBER integer not null, LABEL varchar(255) not null, LOCATION varchar(255), COPY_PATTERN varchar(255) not null, ARTIFACT_SIZE bigint, ARTIFACT_ID bigint not null, primary key (VERSION_BAM_ARTIFACT_ITEM_ID))
+create table DEPLOYMENT_ENVIRONMENT (ENVIRONMENT_ID bigint not null, NAME varchar(255) not null, DESCRIPTION varchar(255), XML_DEFINITION_DATA longvarchar, TRIGGERS_XML_DATA longvarchar, CONFIGURATION_STATE varchar(255), PACKAGE_DEFINITION_ID bigint, REQUIREMENT_SET bigint, NOTIFICATION_SET bigint, LIST_POSITION integer not null, primary key (ENVIRONMENT_ID))
+create table TEST_CLASS (TEST_CLASS_ID bigint not null, TEST_CLASS_NAME varchar(4000), PLAN_ID bigint, primary key (TEST_CLASS_ID))
+create table EC2_IMAGE_SCRIPT (ELASTIC_IMAGE_ID bigint not null, SCRIPT_ID bigint not null, SCRIPT_INDEX integer not null, primary key (ELASTIC_IMAGE_ID, SCRIPT_INDEX))
+create table CAPABILITY_SET (CAPABILITY_SET_ID bigint not null, CAPABILITY_TYPE varchar(255) not null, CAPABILITY_SCOPE varchar(255), primary key (CAPABILITY_SET_ID))
+create table AUDIT_LOG (AUDIT_ID bigint not null, MSG_TIME_STAMP bigint, MSG varchar(4000), OLD_VALUE varchar(255), NEW_VALUE varchar(255), MSG_TYPE varchar(255), PLAN_KEY varchar(255), JOB_KEY varchar(255), TASK_HEADER varchar(255), ENTITY_TYPE varchar(255), USER_NAME varchar(255), primary key (AUDIT_ID))
+create table ACL_OBJECT_IDENTITY (ID bigint not null, OBJECT_ID_CLASS varchar(255), OBJECT_ID_IDENTITY bigint, PARENT_OBJECT bigint, ENTRIES_INHERITING bit, OWNER_TYPE varchar(255), OWNER_SID varchar(255), primary key (ID))
+create table ELASTIC_IMAGE (ELASTIC_IMAGE_ID bigint not null, NAME varchar(255), DESCRIPTION varchar(255), AMI_IMAGE_ID varchar(255), EBS_SNAPSHOT_ID varchar(255), INSTANCE_TYPE varchar(255), AVAILABILITY_ZONE varchar(64), SHIPPED_WITH_BAMBOO bit, IMAGE_DISABLED bit, LEGACY_EBS_HANDLING bit, PRODUCT varchar(32), REGION varchar(255), ROOT_DEVICE_TYPE varchar(255), ARCHITECTURE varchar(255), PLATFORM varchar(255), SUBNET_ID varchar(32), IMAGE_FILES_VERSION varchar(16), OS_NAME varchar(64), CAPABILITY_SET bigint, primary key (ELASTIC_IMAGE_ID))
+create table ARTIFACT_DEFINITION (ARTIFACT_DEFINITION_ID bigint not null, LABEL varchar(255) not null, SRC_DIRECTORY varchar(255), COPY_PATTERN varchar(255) not null, CHAIN_ARTIFACT bit not null, PRODUCER_JOB_ID bigint not null, primary key (ARTIFACT_DEFINITION_ID))
+create table BRANCH_COMMIT_INFO (BRANCH_COMMIT_INFO_ID bigint not null, BRANCH_ID bigint not null, CREATING_AUTHOR_ID bigint, CREATING_COMMIT_DATE timestamp, CREATING_CHANGE_SET_ID varchar(4000), LATEST_COMMIT_AUTHOR_ID bigint, LATEST_COMMIT_DATE timestamp, LATEST_COMMIT_CHANGE_SET_ID varchar(4000), primary key (BRANCH_COMMIT_INFO_ID), unique (BRANCH_ID))
+create table REQUIREMENT (REQUIREMENT_ID bigint not null, KEY_IDENTIFIER varchar(255), REGEX_MATCH bit, READONLY_REQ bit, MATCH_VALUE varchar(4000), PLUGIN_MODULE_KEY varchar(4000), UNIQUE_IDENTIFIER bigint, REQUIREMENT_SET bigint, primary key (REQUIREMENT_ID))
+create table groups (id bigint not null, groupname varchar(255) not null, primary key (id))
+create table DEP_VERSION_PLANRESULTKEYS (DEP_VERSION_PLANRESULTKEYS_ID bigint not null, DEPLOYMENT_VERSION_ID bigint, PLAN_KEY varchar(255) not null, BUILD_NUMBER integer not null, primary key (DEP_VERSION_PLANRESULTKEYS_ID))
+create table DEPLOYMENT_ENV_VCS_LOCATION (ENV_VCS_LOCATION_ID bigint not null, ENVIRONMENT_ID bigint, VCS_LOCATION_ID bigint, LIST_POSITION integer not null, primary key (ENV_VCS_LOCATION_ID))
+create table PLAN_VCS_LOCATION (PLAN_VCS_LOCATION_ID bigint not null, PLAN_ID bigint, VCS_LOCATION_ID bigint, LIST_POSITION integer not null, BUILD_TRIGGER bit not null, primary key (PLAN_VCS_LOCATION_ID))
+create table BUILD (BUILD_ID bigint not null, BUILD_TYPE varchar(255) not null, CREATED_DATE timestamp, UPDATED_DATE timestamp, FULL_KEY varchar(255), BUILDKEY varchar(255), TITLE varchar(255), DESCRIPTION varchar(255), FIRST_BUILD_NUMBER integer, LATEST_BUILD_NUMBER integer, NEXT_BUILD_NUMBER integer, SUSPENDED_FROM_BUILDING bit, MARKED_FOR_DELETION bit, PROJECT_ID bigint not null, MASTER_ID bigint, NOTIFICATION_SET bigint, LINKED_JIRA_ISSUE varchar(255), REM_JIRA_LINK_REQUIRED bit, REQUIREMENT_SET bigint, STAGE_ID bigint, primary key (BUILD_ID), unique (FULL_KEY))
+create table VARIABLE_BASELINE_ITEM (VARIABLE_BASELINE_ITEM_ID bigint not null, VARIABLE_KEY varchar(255) not null, VARIABLE_VALUE varchar(4000), VARIABLE_TYPE varchar(255), VARIABLE_CONTEXT_BASELINE_ID bigint not null, primary key (VARIABLE_BASELINE_ITEM_ID))
+create table DEPLOYMENT_PROJECT (DEPLOYMENT_PROJECT_ID bigint not null, NAME varchar(255) not null, DESCRIPTION varchar(255), PLAN_KEY varchar(255), primary key (DEPLOYMENT_PROJECT_ID))
+create table VARIABLE_DEFINITION (VARIABLE_DEFINITION_ID bigint not null, VARIABLE_KEY varchar(255) not null, VARIABLE_VALUE varchar(4000), VARIABLE_TYPE varchar(255), PLAN_ID bigint, ENVIRONMENT_ID bigint, DEPLOYMENT_VERSION_ID bigint, primary key (VARIABLE_DEFINITION_ID))
+create table REMEMBERME_TOKEN (id bigint not null, USERNAME varchar(255) not null, CREATED bigint not null, TOKEN varchar(255) not null, primary key (id))
+create table VARIABLE_SUBSTITUTION (VARIABLE_SUBSTITUTION_ID bigint not null, VARIABLE_KEY varchar(255) not null, VARIABLE_VALUE varchar(4000), VARIABLE_TYPE varchar(255), BUILDRESULTSUMMARY_ID bigint not null, primary key (VARIABLE_SUBSTITUTION_ID))
+create table IMSERVER (IMSERVER_ID bigint not null, TITLE varchar(255) not null, HOST varchar(255) not null, PORT integer, USERNAME varchar(255), RESOURCE_NAME varchar(255), PASSWORD varchar(255), SSL_REQUIRED bit not null, TLS_REQUIRED bit, primary key (IMSERVER_ID))
+create table QUEUE (QUEUE_ID bigint not null, AGENT_TYPE varchar(255) not null, TITLE varchar(255) not null, AGENT_DESCRIPTION longvarchar, CREATED_DATE timestamp, UPDATED_DATE timestamp, ENABLED bit, CAPABILITY_SET bigint, LAST_START_TIME timestamp, LAST_STOP_TIME timestamp, ELASTIC_INSTANCE_ID varchar(255), ELASTIC_IMAGE bigint, primary key (QUEUE_ID))
+create table DEPLOYMENT_VERSION_COMMIT (DEPLOYMENT_VERSION_COMMIT_ID bigint not null, DEP_VERSION_CHANGESET_ID bigint, AUTHOR_ID bigint, COMMIT_DATE timestamp, COMMIT_REVISION varchar(4000), COMMIT_COMMENT_CLOB longvarchar, primary key (DEPLOYMENT_VERSION_COMMIT_ID))
+create table CREDENTIALS (CREDENTIALS_ID bigint not null, NAME varchar(255), XML longvarchar, primary key (CREDENTIALS_ID))
+create table RELEVANT_CHANGESETS (BUILDRESULTSUMMARY_ID bigint not null, REPOSITORY_CHANGESET_ID bigint not null)
+create table VARIABLE_CONTEXT_BASELINE (VARIABLE_CONTEXT_BASELINE_ID bigint not null, HASH_STRING varchar(255) not null, primary key (VARIABLE_CONTEXT_BASELINE_ID))
+create table local_members (userid bigint not null, groupid bigint not null, primary key (groupid, userid))
+create table TEST_CASE_RESULT (TEST_CASE_RESULT_ID bigint not null, TEST_CASE_ID bigint, TEST_CLASS_RESULT_ID bigint, DURATION bigint, TEST_STATE varchar(255), DELTA_STATE varchar(255), FAILING_SINCE integer, QUARANTINED bit, primary key (TEST_CASE_RESULT_ID))
+create table CHAIN_STAGE_RESULT (STAGERESULT_ID bigint not null, CREATED_DATE timestamp, UPDATED_DATE timestamp, NAME varchar(255) not null, DESCRIPTION varchar(255), OPTIONAL_STAGE bit, PROCESSING_DURATION bigint, CHAINRESULT_ID bigint not null, LIST_POSITION integer, primary key (STAGERESULT_ID))
+create table DEPLOYMENT_VERSION (DEPLOYMENT_VERSION_ID bigint not null, NAME varchar(255) not null, CREATED_DATE timestamp, AGE_ZERO_POINT timestamp, CREATOR_USERNAME varchar(255), PLAN_BRANCH_NAME varchar(255) not null, PROJECT_ID bigint, VARIABLE_CONTEXT_BASELINE_ID bigint, primary key (DEPLOYMENT_VERSION_ID))
+create table ARTIFACT_SUBSCRIPTION (ARTIFACT_SUBSCRIPTION_ID bigint not null, ARTIFACT_DEFINITION_ID bigint not null, CONSUMER_JOB_ID bigint not null, DST_DIRECTORY varchar(255), primary key (ARTIFACT_SUBSCRIPTION_ID))
+create table REPOSITORY_CHANGESET (REPOSITORY_CHANGESET_ID bigint not null, BUILDRESULTSUMMARY_ID bigint not null, VCS_LOCATION_ID bigint not null, CHANGESET_ID varchar(4000), SKIPPED_COMMITS_COUNT bigint, LIST_POSITION integer not null, BUILD_TRIGGER bit not null, primary key (REPOSITORY_CHANGESET_ID))
+create table AGENT_ASSIGNMENT (ASSIGNMENT_ID bigint not null, EXECUTOR_ID bigint, EXECUTOR_TYPE varchar(255), EXECUTABLE_ID bigint, EXECUTABLE_TYPE varchar(255), primary key (ASSIGNMENT_ID))
+create table BUILD_DEFINITION (BUILD_DEFINITION_ID bigint not null, BUILD_DEFINITION_TYPE varchar(255) not null, CREATED_DATE timestamp, UPDATED_DATE timestamp, XML_DEFINITION_DATA longvarchar, BUILD_ID bigint, primary key (BUILD_DEFINITION_ID), unique (BUILD_ID))
+create table TRUSTED_APPS_URLS (URL_PATTERN_ID bigint not null, URL_PATTERN varchar(255))
+create table BUILDRESULTSUMMARY_LABEL (ID bigint not null, LABEL_ID bigint not null, BUILDRESULTSUMMARY_ID bigint, BUILD_ID bigint, PROJECT_ID bigint, USER_NAME varchar(255), CREATED_DATE timestamp, UPDATED_DATE timestamp, primary key (ID))
+create table SCRIPT (SCRIPT_ID bigint not null, body longvarchar, primary key (SCRIPT_ID))
+create table PLAN_DEPENDENCIES (DEPENDENCY_ID bigint not null, DEPENDENCY_TYPE varchar(255), CHILD_PLAN_ID bigint, PARENT_PLAN_ID bigint, primary key (DEPENDENCY_ID))
+create table DEPLOYMENT_VERSION_NAMING (VERSION_NAMING_SCHEME_ID bigint not null, DEPLOYMENT_PROJECT_ID bigint not null, NEXT_VERSION_NAME varchar(255), AUTO_INCREMENT bit, primary key (VERSION_NAMING_SCHEME_ID))
+create table PROJECT (PROJECT_ID bigint not null, CREATED_DATE timestamp, UPDATED_DATE timestamp, PROJECT_KEY varchar(255) not null, TITLE varchar(255), DESCRIPTION varchar(255), MARKED_FOR_DELETION bit, primary key (PROJECT_ID))
+create table OS_PROPERTYENTRY (entity_name varchar(125) not null, entity_id bigint not null, entity_key varchar(200) not null, key_type integer, boolean_val bit, double_val double, string_val varchar(255), text_val longvarchar, long_val bigint, int_val integer, date_val timestamp, primary key (entity_name, entity_id, entity_key))
+create table AUTH_ATTEMPT_INFO (id bigint not null, USER_NAME varchar(255) not null, AUTH_COUNT integer, LAST_AUTH_TIMESTAMP date not null, primary key (id), unique (USER_NAME))
+create table VARIABLE_CONTEXT (VARIABLE_CONTEXT_ID bigint not null, VARIABLE_KEY varchar(255) not null, VARIABLE_VALUE varchar(4000), VARIABLE_TYPE varchar(255), BUILDRESULTSUMMARY_ID bigint not null, primary key (VARIABLE_CONTEXT_ID))
+create table DEPLOYMENT_PROJECT_ITEM (DEPLOYMENT_PROJECT_ITEM_ID bigint not null, NAME varchar(255), DEPLOYMENT_PROJECT_ID bigint, primary key (DEPLOYMENT_PROJECT_ITEM_ID))
+create table external_entities (id bigint not null, name varchar(255), type varchar(255) not null, primary key (id))
+create table TEST_ERROR (ERROR_ID bigint not null, RESULT_ID bigint, ERROR_CONTENT longvarchar, primary key (ERROR_ID))
+create table MERGE_RESULT (MERGERESULT_ID bigint not null, FAILURE_REASON varchar(4000), INTEGRATION_BRANCH_VCS_KEY varchar(255) not null, INTEGRATION_VCS_LOCATION_ID bigint not null, INTEGRATION_BRANCH_NAME varchar(255), MERGE_RESULT_VCS_KEY varchar(255), BRANCH_TARGET_VCS_KEY varchar(255), BRANCH_NAME varchar(255), MERGE_STATE varchar(255), PUSH_STATE varchar(255), INTEGRATION_STRATEGY varchar(255), primary key (MERGERESULT_ID))
+create table STAGE_VARIABLE_CONTEXT (VARIABLE_CONTEXT_ID bigint not null, VARIABLE_KEY varchar(255) not null, VARIABLE_VALUE varchar(4000), VARIABLE_TYPE varchar(255), STAGERESULT_ID bigint not null, primary key (VARIABLE_CONTEXT_ID))
+create table NOTIFICATION_SETS (NOTIFICATION_SET_ID bigint not null, SET_TYPE varchar(255), primary key (NOTIFICATION_SET_ID))
+create table USER_COMMIT (COMMIT_ID bigint not null, REPOSITORY_CHANGESET_ID bigint, AUTHOR_ID bigint, COMMIT_DATE timestamp, COMMIT_REVISION varchar(4000), COMMIT_COMMENT_CLOB longvarchar, FOREIGN_COMMIT bit not null, primary key (COMMIT_ID))
+create table LABEL (LABEL_ID bigint not null, NAME varchar(255), NAMESPACE varchar(255), CREATED_DATE timestamp, UPDATED_DATE timestamp, primary key (LABEL_ID))
+create table BUILDRESULTSUMMARY (BUILDRESULTSUMMARY_ID bigint not null, BUILD_TYPE varchar(255) not null, CREATED_DATE timestamp, UPDATED_DATE timestamp, BUILD_KEY varchar(255), BUILD_NUMBER integer, BUILD_STATE varchar(255), LIFE_CYCLE_STATE varchar(255), BUILD_DATE timestamp, BUILD_CANCELLED_DATE timestamp, BUILD_COMPLETED_DATE timestamp, DURATION bigint, PROCESSING_DURATION bigint, TIME_TO_FIX bigint, TRIGGER_REASON varchar(255), DELTA_STATE varchar(255), BUILD_AGENT_ID bigint, STAGERESULT_ID bigint, RESTART_COUNT integer, QUEUE_TIME timestamp, MARKED_FOR_DELETION bit, ONCE_OFF bit, CUSTOM_BUILD bit, REBUILD bit, LOG_SIZE bigint, VARIABLE_CONTEXT_BASELINE_ID bigint, FORMAT_VERSION integer not null, FAILURE_TEST_COUNT integer, SUCCESS_TEST_COUNT integer, TOTAL_TEST_COUNT integer, BROKEN_TEST_COUNT integer, EXISTING_TEST_COUNT integer, FIXED_TEST_COUNT integer, TOTAL_TEST_DURATION bigint, QUARANTINED_TEST_COUNT integer, SKIPPED_TEST_COUNT integer, VCS_UPDATE_TIME timestamp, CHAIN_RESULT bigint, CONTINUABLE bit, FIXED_IN_RESULT integer, MERGERESULT_ID bigint, primary key (BUILDRESULTSUMMARY_ID))
+create table COMMIT_FILES (COMMIT_ID bigint not null, COMMIT_FILE_NAME varchar(1000), COMMIT_FILE_REIVISION varchar(4000), LIST_POSITION integer not null, primary key (COMMIT_ID, LIST_POSITION))
+create table DEPLOYMENT_VARIABLE_SUBS (VARIABLE_SUBSTITUTION_ID bigint not null, VARIABLE_KEY varchar(255) not null, VARIABLE_VALUE varchar(4000), VARIABLE_TYPE varchar(255), DEPLOYMENT_RESULT_ID bigint not null, primary key (VARIABLE_SUBSTITUTION_ID))
+create table NOTIFICATIONS (NOTIFICATION_RULE_ID bigint not null, CONDITION_KEY varchar(255), CONDITION_DATA varchar(4000), NOTIFICATION_SET bigint, RECIPIENT varchar(255), RECIPIENT_TYPE varchar(255), primary key (NOTIFICATION_RULE_ID))
+create table BRS_CONSUMED_SUBSCRIPTION (CONSUMED_SUBSCRIPTION_ID bigint not null, DST_DIRECTORY varchar(255), CONSUMER_RESULTSUMMARY_ID bigint not null, ARTIFACT_LINK_ID bigint not null, primary key (CONSUMED_SUBSCRIPTION_ID))
+create table REQUIREMENT_SET (REQUIREMENT_SET_ID bigint not null, primary key (REQUIREMENT_SET_ID))
+create table TEST_CASE (TEST_CASE_ID bigint not null, TEST_CLASS_ID bigint, TEST_CASE_NAME varchar(4000), SUCCESSFUL_RUNS integer, FAILED_RUNS integer, AVG_DURATION bigint, FIRST_BUILD_NUM integer, LAST_BUILD_NUM integer, QUARANTINING_USERNAME varchar(1000), QUARANTINE_DATE timestamp, LINKED_JIRA_ISSUE varchar(256), primary key (TEST_CASE_ID))
+create table DEPLOYMENT_VERSION_CHANGESET (DEP_VERSION_CHANGESET_ID bigint not null, DEPLOYMENT_VERSION_ID bigint not null, VCS_LOCATION_ID bigint not null, CHANGESET_ID varchar(4000), SKIPPED_COMMITS_COUNT bigint not null, primary key (DEP_VERSION_CHANGESET_ID))
+create table PLAN_VCS_HISTORY (PLAN_VCS_HISTORY_ID bigint not null, PLAN_KEY varchar(255) not null, BUILD_NUMBER integer not null, REVISION_KEY varchar(255), VCS_LOCATION_ID bigint not null, XML_CUSTOM_DATA longvarchar, primary key (PLAN_VCS_HISTORY_ID))
+create table VCS_BRANCH (VCS_BRANCH_ID bigint not null, NAME varchar(255) not null, CHAIN_ID bigint not null, primary key (VCS_BRANCH_ID))
+create table variablesToAutoIncrement (VERSION_NAMING_SCHEME_ID bigint not null, VARIABLE_NAME varchar(255) not null, primary key (VERSION_NAMING_SCHEME_ID, VARIABLE_NAME))
+create table TRUSTED_APPS_IPS (IP_PATTERN_ID bigint not null, IP_PATTERN varchar(255))
+create table password_reset_token (id bigint not null, username varchar(255) not null, token varchar(255) not null, token_created timestamp not null, primary key (id), unique (username))
+create table DEPLOYMENT_VERSION_STATUS (DEPLOYMENT_VERSION_STATUS_ID bigint not null, VERSION_STATE varchar(255), USER_NAME varchar(255), DEPLOYMENT_VERSION_ID bigint, CREATED_DATE timestamp, primary key (DEPLOYMENT_VERSION_STATUS_ID))
+create table DEPLOYMENT_VERSION_JIRA_ISSUE (DEP_VER_JIRA_ISSUE_ID bigint not null, DEPLOYMENT_VERSION_ID bigint, JIRA_ISSUE_KEY varchar(255), JIRA_ISSUE_LINK_TYPE integer, primary key (DEP_VER_JIRA_ISSUE_ID))
+create table BRS_ARTIFACT_LINK (ARTIFACT_LINK_ID bigint not null, BUILDRESULTSUMMARY_ID bigint not null, PRODUCERJOBRESULT_ID bigint, ARTIFACT_ID bigint not null, primary key (ARTIFACT_LINK_ID))
+create table DEPLOYMENT_PROJECT_ITEM_BA (BAM_ARTIFACT_ITEM_ID bigint not null, ARTIFACT_DEFINITION_ID bigint not null, primary key (BAM_ARTIFACT_ITEM_ID))
+create table ARTIFACT (ARTIFACT_ID bigint not null, LABEL varchar(255) not null, ARTIFACT_SIZE bigint, CHAIN_ARTIFACT bit not null, GLOBALLY_STORED bit not null, LINK_TYPE varchar(255), PLAN_KEY varchar(255) not null, BUILD_NUMBER integer not null, primary key (ARTIFACT_ID))
+create index dr_build_state_idx on DEPLOYMENT_RESULT (DEPLOYMENT_STATE)
+create index dr_dep_ver_id on DEPLOYMENT_RESULT (VERSION_ID)
+create index dr_ctx_baseline_idx on DEPLOYMENT_RESULT (VARIABLE_CONTEXT_BASELINE_ID)
+create index dr_environment_id on DEPLOYMENT_RESULT (ENVIRONMENT_ID)
+create index dr_agent_idx on DEPLOYMENT_RESULT (AGENT_ID)
+create index dr_life_cycle_state_idx on DEPLOYMENT_RESULT (LIFE_CYCLE_STATE)
+alter table DEPLOYMENT_RESULT add constraint FKB7ACDAD7A248FEE7 foreign key (ENVIRONMENT_ID) references DEPLOYMENT_ENVIRONMENT
+alter table DEPLOYMENT_RESULT add constraint FKB7ACDAD7F4F36A02 foreign key (VERSION_ID) references DEPLOYMENT_VERSION
+alter table DEPLOYMENT_RESULT add constraint FKB7ACDAD7E3B5B062 foreign key (VARIABLE_CONTEXT_BASELINE_ID) references VARIABLE_CONTEXT_BASELINE
+create index author_name_idx on AUTHOR (AUTHOR_NAME)
+create index dver_item_dversion on DEPLOYMENT_VERSION_ITEM (DEPLOYMENT_VERSION_ID)
+alter table DEPLOYMENT_VERSION_ITEM add constraint FKEC5E1747BD9BBC foreign key (DEPLOYMENT_VERSION_ID) references DEPLOYMENT_VERSION
+alter table ELASTIC_SCHEDULE add constraint FK1C6B30E1581FB731 foreign key (ELASTIC_IMAGE) references ELASTIC_IMAGE
+create index comment_entityId_idx on USER_COMMENT (ENTITY_ID)
+create index comment_userName_idx on USER_COMMENT (USER_NAME)
+create index trust_apps_app_id_idx on TRUSTED_APPS (APP_ID)
+create index testClassRes_buildResSumId_idx on TEST_CLASS_RESULT (BUILDRESULTSUMMARY_ID)
+create index testClassRes_testClassId_idx on TEST_CLASS_RESULT (TEST_CLASS_ID)
+alter table TEST_CLASS_RESULT add constraint FK3521FF712170166F foreign key (TEST_CLASS_ID) references TEST_CLASS
+alter table TEST_CLASS_RESULT add constraint FK3521FF71A958B29F foreign key (BUILDRESULTSUMMARY_ID) references BUILDRESULTSUMMARY
+alter table ACL_ENTRY add constraint FK2FB5F83D988CEFE9 foreign key (ACL_OBJECT_IDENTITY) references ACL_OBJECT_IDENTITY
+create index plan_vcs_location_is_global on VCS_LOCATION (IS_GLOBAL)
+create index capability_set_index on CAPABILITY (CAPABILITY_SET)
+create index capability_key_index on CAPABILITY (KEY_IDENTIFIER)
+alter table CAPABILITY add constraint FKEE341118A542349B foreign key (CAPABILITY_SET) references CAPABILITY_SET
+create index uuid_idx on AGENT_AUTHENTICATION (UUID)
+create index band_key_idx on BANDANA (BUILD_ID, BANDANA_KEY)
+create index brs_customdata_brsId_idx on BUILDRESULTSUMMARY_CUSTOMDATA (BUILDRESULTSUMMARY_ID)
+alter table BUILDRESULTSUMMARY_CUSTOMDATA add constraint FK30932C1FA958B29F foreign key (BUILDRESULTSUMMARY_ID) references BUILDRESULTSUMMARY
+alter table DEPLOYMENT_RESULT_CUSTOMDATA add constraint FKC16165037C500F83 foreign key (DEPLOYMENT_RESULT_ID) references DEPLOYMENT_RESULT
+alter table external_members add constraint FKD8C8D8A5117D5FDA foreign key (groupid) references groups
+alter table external_members add constraint FKD8C8D8A5F25E5D5F foreign key (extentityid) references external_entities
+create index brs_linkedjiraissues_brs_idx on BRS_LINKEDJIRAISSUES (BUILDRESULTSUMMARY_ID)
+alter table BRS_LINKEDJIRAISSUES add constraint FK45B7017DA958B29F foreign key (BUILDRESULTSUMMARY_ID) references BUILDRESULTSUMMARY
+create index stage_deletion_idx on CHAIN_STAGE (MARKED_FOR_DELETION)
+alter table CHAIN_STAGE add constraint FKB613CFC0D96054AC foreign key (BUILD_ID) references BUILD
+create index ver_link_artifact_id on DEPLOYMENT_VERSION_ITEM_BA (ARTIFACT_ID)
+alter table DEPLOYMENT_VERSION_ITEM_BA add constraint FK2598A6EA3CF8CEA8 foreign key (ARTIFACT_ID) references ARTIFACT
+alter table DEPLOYMENT_VERSION_ITEM_BA add constraint FK2598A6EA18C479B2 foreign key (VERSION_BAM_ARTIFACT_ITEM_ID) references DEPLOYMENT_VERSION_ITEM
+create index env_dep_project_id on DEPLOYMENT_ENVIRONMENT (PACKAGE_DEFINITION_ID)
+alter table DEPLOYMENT_ENVIRONMENT add constraint FKC1B0CB79B414BF2E foreign key (PACKAGE_DEFINITION_ID) references DEPLOYMENT_PROJECT
+alter table DEPLOYMENT_ENVIRONMENT add constraint FKC1B0CB79707D72EE foreign key (NOTIFICATION_SET) references NOTIFICATION_SETS
+alter table DEPLOYMENT_ENVIRONMENT add constraint FKC1B0CB79645E1626 foreign key (REQUIREMENT_SET) references REQUIREMENT_SET
+create index testClass_planId_inx on TEST_CLASS (PLAN_ID)
+alter table TEST_CLASS add constraint FKCE081B6BD5BADF1 foreign key (PLAN_ID) references BUILD
+alter table EC2_IMAGE_SCRIPT add constraint FK435AAF5A12C89CE9 foreign key (ELASTIC_IMAGE_ID) references ELASTIC_IMAGE
+alter table EC2_IMAGE_SCRIPT add constraint FK435AAF5AB4FE710F foreign key (SCRIPT_ID) references SCRIPT
+create index cap_scope_idx on CAPABILITY_SET (CAPABILITY_SCOPE)
+alter table ACL_OBJECT_IDENTITY add constraint FK988CEFE974D9E474 foreign key (PARENT_OBJECT) references ACL_OBJECT_IDENTITY
+alter table ELASTIC_IMAGE add constraint FK581FB731A542349B foreign key (CAPABILITY_SET) references CAPABILITY_SET
+create index art_def_producer_idx on ARTIFACT_DEFINITION (PRODUCER_JOB_ID)
+alter table ARTIFACT_DEFINITION add constraint FKF88809E0D324424A foreign key (PRODUCER_JOB_ID) references BUILD
+create index branch_creating_authorId on BRANCH_COMMIT_INFO (CREATING_AUTHOR_ID)
+create index branch_last_commit_authorId on BRANCH_COMMIT_INFO (LATEST_COMMIT_AUTHOR_ID)
+create index branch_commit_branch_id_idx on BRANCH_COMMIT_INFO (BRANCH_ID)
+alter table BRANCH_COMMIT_INFO add constraint FK13EAB799FFA424FF foreign key (LATEST_COMMIT_AUTHOR_ID) references AUTHOR
+alter table BRANCH_COMMIT_INFO add constraint FK13EAB7994E9C6E49 foreign key (CREATING_AUTHOR_ID) references AUTHOR
+create index requirement_set_index on REQUIREMENT (REQUIREMENT_SET)
+alter table REQUIREMENT add constraint FK95FC7023645E1626 foreign key (REQUIREMENT_SET) references REQUIREMENT_SET
+create index dver_pk_plan_key on DEP_VERSION_PLANRESULTKEYS (PLAN_KEY, BUILD_NUMBER)
+create index dver_pk_version_id on DEP_VERSION_PLANRESULTKEYS (DEPLOYMENT_VERSION_ID)
+alter table DEP_VERSION_PLANRESULTKEYS add constraint FK939E88317BD9BBC foreign key (DEPLOYMENT_VERSION_ID) references DEPLOYMENT_VERSION
+create index env_vcs_location_env_id on DEPLOYMENT_ENV_VCS_LOCATION (ENVIRONMENT_ID)
+create index env_vcs_location_repo_id on DEPLOYMENT_ENV_VCS_LOCATION (VCS_LOCATION_ID)
+alter table DEPLOYMENT_ENV_VCS_LOCATION add constraint FKCAE794FA1D68B66C foreign key (VCS_LOCATION_ID) references VCS_LOCATION
+alter table DEPLOYMENT_ENV_VCS_LOCATION add constraint FKCAE794FAA248FEE7 foreign key (ENVIRONMENT_ID) references DEPLOYMENT_ENVIRONMENT
+create index plan_vcs_location_repo_id on PLAN_VCS_LOCATION (VCS_LOCATION_ID)
+create index plan_vcs_location_plan_id on PLAN_VCS_LOCATION (PLAN_ID)
+alter table PLAN_VCS_LOCATION add constraint FKB7FED5E4D5BADF1 foreign key (PLAN_ID) references BUILD
+alter table PLAN_VCS_LOCATION add constraint FKB7FED5E41D68B66C foreign key (VCS_LOCATION_ID) references VCS_LOCATION
+create index build_key_idx on BUILD (FULL_KEY)
+create index plan_deletion_idx on BUILD (MARKED_FOR_DELETION)
+alter table BUILD add constraint FK3C9CE4E707D72EE foreign key (NOTIFICATION_SET) references NOTIFICATION_SETS
+alter table BUILD add constraint FK3C9CE4EB2B11C18 foreign key (MASTER_ID) references BUILD
+alter table BUILD add constraint FK3C9CE4EA77F0821 foreign key (PROJECT_ID) references PROJECT
+alter table BUILD add constraint FK3C9CE4E7C814E1C foreign key (STAGE_ID) references CHAIN_STAGE
+alter table BUILD add constraint FK3C9CE4E645E1626 foreign key (REQUIREMENT_SET) references REQUIREMENT_SET
+create index var_base_ctx_type_idx on VARIABLE_BASELINE_ITEM (VARIABLE_TYPE)
+create index var_item_baseline_idx on VARIABLE_BASELINE_ITEM (VARIABLE_CONTEXT_BASELINE_ID)
+alter table VARIABLE_BASELINE_ITEM add constraint FKBD61044AE3B5B062 foreign key (VARIABLE_CONTEXT_BASELINE_ID) references VARIABLE_CONTEXT_BASELINE
+create index deployment_plan_key on DEPLOYMENT_PROJECT (PLAN_KEY)
+create index var_def_dep_ver_idx on VARIABLE_DEFINITION (DEPLOYMENT_VERSION_ID)
+create index var_def_env_idx on VARIABLE_DEFINITION (ENVIRONMENT_ID)
+create index variable_definition_type_idx on VARIABLE_DEFINITION (VARIABLE_TYPE)
+create index var_def_plan_idx on VARIABLE_DEFINITION (PLAN_ID)
+create index var_def_key_idx on VARIABLE_DEFINITION (VARIABLE_KEY)
+alter table VARIABLE_DEFINITION add constraint FK38458EF6D5BADF1 foreign key (PLAN_ID) references BUILD
+create index rmt_username_idx on REMEMBERME_TOKEN (USERNAME)
+create index rmt_created_idx on REMEMBERME_TOKEN (CREATED)
+create index var_subst_result_idx on VARIABLE_SUBSTITUTION (BUILDRESULTSUMMARY_ID)
+create index var_subst_type_idx on VARIABLE_SUBSTITUTION (VARIABLE_TYPE)
+alter table VARIABLE_SUBSTITUTION add constraint FK684A7BE0A958B29F foreign key (BUILDRESULTSUMMARY_ID) references BUILDRESULTSUMMARY
+alter table QUEUE add constraint FK49D20F1A542349B foreign key (CAPABILITY_SET) references CAPABILITY_SET
+alter table QUEUE add constraint FK49D20F1581FB731 foreign key (ELASTIC_IMAGE) references ELASTIC_IMAGE
+create index dep_ver_commit_changeset_id on DEPLOYMENT_VERSION_COMMIT (DEP_VERSION_CHANGESET_ID)
+create index dep_ver_commit_rev_idx on DEPLOYMENT_VERSION_COMMIT (COMMIT_REVISION)
+create index dep_ver_commit_author_id on DEPLOYMENT_VERSION_COMMIT (AUTHOR_ID)
+alter table DEPLOYMENT_VERSION_COMMIT add constraint FK6A5377581F560C5F foreign key (DEP_VERSION_CHANGESET_ID) references DEPLOYMENT_VERSION_CHANGESET
+alter table DEPLOYMENT_VERSION_COMMIT add constraint FK6A537758FE0C684F foreign key (AUTHOR_ID) references AUTHOR
+create index rel_ch_brs_idx on RELEVANT_CHANGESETS (BUILDRESULTSUMMARY_ID)
+alter table RELEVANT_CHANGESETS add constraint FK34A3E6E3CBADFCBD foreign key (REPOSITORY_CHANGESET_ID) references REPOSITORY_CHANGESET
+alter table RELEVANT_CHANGESETS add constraint FK34A3E6E3A958B29F foreign key (BUILDRESULTSUMMARY_ID) references BUILDRESULTSUMMARY
+create index var_ctx_hash_string on VARIABLE_CONTEXT_BASELINE (HASH_STRING)
+alter table local_members add constraint FK6B8FB445CE2B3226 foreign key (userid) references users
+alter table local_members add constraint FK6B8FB445117D5FDA foreign key (groupid) references groups
+create index testCaseRes_deltaState_idx on TEST_CASE_RESULT (DELTA_STATE)
+create index testCaseRes_classResultId_idx on TEST_CASE_RESULT (TEST_CLASS_RESULT_ID)
+create index testCaseRes_caseId_idx on TEST_CASE_RESULT (TEST_CASE_ID)
+create index testCaseRes_state_idx on TEST_CASE_RESULT (TEST_STATE)
+alter table TEST_CASE_RESULT add constraint FKD6859FDF5AA11DDD foreign key (TEST_CASE_ID) references TEST_CASE
+alter table TEST_CASE_RESULT add constraint FKD6859FDF1F5E6CA9 foreign key (TEST_CLASS_RESULT_ID) references TEST_CLASS_RESULT
+create index csr_chain_result_idx on CHAIN_STAGE_RESULT (CHAINRESULT_ID)
+alter table CHAIN_STAGE_RESULT add constraint FKC07B17C433C66FC foreign key (CHAINRESULT_ID) references BUILDRESULTSUMMARY
+create index dv_ctx_baseline_idx on DEPLOYMENT_VERSION (VARIABLE_CONTEXT_BASELINE_ID)
+create index dversion_name on DEPLOYMENT_VERSION (NAME)
+create index dversion_dep_id on DEPLOYMENT_VERSION (PROJECT_ID)
+alter table DEPLOYMENT_VERSION add constraint FK1178613EA77F0821 foreign key (PROJECT_ID) references DEPLOYMENT_PROJECT
+alter table DEPLOYMENT_VERSION add constraint FK1178613EE3B5B062 foreign key (VARIABLE_CONTEXT_BASELINE_ID) references VARIABLE_CONTEXT_BASELINE
+create index art_sub_definition_idx on ARTIFACT_SUBSCRIPTION (ARTIFACT_DEFINITION_ID)
+create index art_sub_consumer_job_idx on ARTIFACT_SUBSCRIPTION (CONSUMER_JOB_ID)
+alter table ARTIFACT_SUBSCRIPTION add constraint FK4F23A6AAD2A9566 foreign key (CONSUMER_JOB_ID) references BUILD
+alter table ARTIFACT_SUBSCRIPTION add constraint FK4F23A6ADEF697DA foreign key (ARTIFACT_DEFINITION_ID) references ARTIFACT_DEFINITION
+create index repocommits_brs_idx on REPOSITORY_CHANGESET (BUILDRESULTSUMMARY_ID)
+create index repocommits_vcsloc_idx on REPOSITORY_CHANGESET (VCS_LOCATION_ID)
+alter table REPOSITORY_CHANGESET add constraint FK4A5687DD1D68B66C foreign key (VCS_LOCATION_ID) references VCS_LOCATION
+alter table REPOSITORY_CHANGESET add constraint FK4A5687DDA958B29F foreign key (BUILDRESULTSUMMARY_ID) references BUILDRESULTSUMMARY
+create index executor_id_idx on AGENT_ASSIGNMENT (EXECUTOR_ID)
+create index executable_type_idx on AGENT_ASSIGNMENT (EXECUTABLE_TYPE)
+create index executable_id_idx on AGENT_ASSIGNMENT (EXECUTABLE_ID)
+create index executor_type_idx on AGENT_ASSIGNMENT (EXECUTOR_TYPE)
+alter table BUILD_DEFINITION add constraint FK611B4BE4D96054AC foreign key (BUILD_ID) references BUILD
+alter table TRUSTED_APPS_URLS add constraint FK89CE4929D65FF53A foreign key (URL_PATTERN_ID) references TRUSTED_APPS
+create index label_brsId_idx on BUILDRESULTSUMMARY_LABEL (BUILDRESULTSUMMARY_ID)
+alter table BUILDRESULTSUMMARY_LABEL add constraint FK9043ED0A77F0821 foreign key (PROJECT_ID) references PROJECT
+alter table BUILDRESULTSUMMARY_LABEL add constraint FK9043ED0D96054AC foreign key (BUILD_ID) references BUILD
+alter table BUILDRESULTSUMMARY_LABEL add constraint FK9043ED0B9DE8666 foreign key (LABEL_ID) references LABEL
+alter table BUILDRESULTSUMMARY_LABEL add constraint FK9043ED0A958B29F foreign key (BUILDRESULTSUMMARY_ID) references BUILDRESULTSUMMARY
+create index plan_dependency_parent_id on PLAN_DEPENDENCIES (PARENT_PLAN_ID)
+create index plan_dependency_child_id on PLAN_DEPENDENCIES (CHILD_PLAN_ID)
+alter table PLAN_DEPENDENCIES add constraint FKF971F67F8D5E95AE foreign key (CHILD_PLAN_ID) references BUILD
+alter table PLAN_DEPENDENCIES add constraint FKF971F67F6BDF075C foreign key (PARENT_PLAN_ID) references BUILD
+create index ver_name_dep_proj_idx on DEPLOYMENT_VERSION_NAMING (DEPLOYMENT_PROJECT_ID)
+alter table DEPLOYMENT_VERSION_NAMING add constraint FK7C536EA9BA4939DB foreign key (DEPLOYMENT_PROJECT_ID) references DEPLOYMENT_PROJECT
+create index project_key_idx on PROJECT (PROJECT_KEY)
+create index project_deletion_idx on PROJECT (MARKED_FOR_DELETION)
+create index var_ctx_type_idx on VARIABLE_CONTEXT (VARIABLE_TYPE)
+create index var_context_result_idx on VARIABLE_CONTEXT (BUILDRESULTSUMMARY_ID)
+alter table VARIABLE_CONTEXT add constraint FKB780EECCA958B29F foreign key (BUILDRESULTSUMMARY_ID) references BUILDRESULTSUMMARY
+create index dep_pr_item_dep_id on DEPLOYMENT_PROJECT_ITEM (DEPLOYMENT_PROJECT_ID)
+alter table DEPLOYMENT_PROJECT_ITEM add constraint FK4CE273D3BA4939DB foreign key (DEPLOYMENT_PROJECT_ID) references DEPLOYMENT_PROJECT
+create index testError_caseResultId_idx on TEST_ERROR (RESULT_ID)
+alter table TEST_ERROR add constraint FKCE2743FB39A4607D foreign key (RESULT_ID) references TEST_CASE_RESULT
+create index stg_var_ctx_type_idx on STAGE_VARIABLE_CONTEXT (VARIABLE_TYPE)
+create index stg_var_ctx_result_idx on STAGE_VARIABLE_CONTEXT (STAGERESULT_ID)
+alter table STAGE_VARIABLE_CONTEXT add constraint FK3BC0DE0DCEDEEF5F foreign key (STAGERESULT_ID) references CHAIN_STAGE_RESULT
+create index setTypeIndex on NOTIFICATION_SETS (SET_TYPE)
+create index commit_authorId on USER_COMMIT (AUTHOR_ID)
+create index commit_repositoryChangesetId on USER_COMMIT (REPOSITORY_CHANGESET_ID)
+create index commit_rev_idx on USER_COMMIT (COMMIT_REVISION)
+alter table USER_COMMIT add constraint FKF8936C2BCBADFCBD foreign key (REPOSITORY_CHANGESET_ID) references REPOSITORY_CHANGESET
+alter table USER_COMMIT add constraint FKF8936C2BFE0C684F foreign key (AUTHOR_ID) references AUTHOR
+create index label_name_namespace_index on LABEL (NAME, NAMESPACE)
+create index key_number_delta_state on BUILDRESULTSUMMARY (DELTA_STATE)
+create index brs_build_state_idx on BUILDRESULTSUMMARY (BUILD_STATE)
+create index brs_life_cycle_state_idx on BUILDRESULTSUMMARY (LIFE_CYCLE_STATE)
+create index brs_deletion_idx on BUILDRESULTSUMMARY (MARKED_FOR_DELETION)
+create index brs_stage_result_id_idx on BUILDRESULTSUMMARY (STAGERESULT_ID)
+create index key_number_results_index on BUILDRESULTSUMMARY (BUILD_KEY, BUILD_NUMBER)
+create index brs_log_size_idx on BUILDRESULTSUMMARY (LOG_SIZE)
+create index brs_agent_idx on BUILDRESULTSUMMARY (BUILD_AGENT_ID)
+create index brs_chain_result_summary_idx on BUILDRESULTSUMMARY (CHAIN_RESULT)
+create index rs_ctx_baseline_idx on BUILDRESULTSUMMARY (VARIABLE_CONTEXT_BASELINE_ID)
+alter table BUILDRESULTSUMMARY add constraint FK26506D3B9E6537B foreign key (CHAIN_RESULT) references BUILDRESULTSUMMARY
+alter table BUILDRESULTSUMMARY add constraint FK26506D3BE3B5B062 foreign key (VARIABLE_CONTEXT_BASELINE_ID) references VARIABLE_CONTEXT_BASELINE
+alter table BUILDRESULTSUMMARY add constraint FK26506D3BCEDEEF5F foreign key (STAGERESULT_ID) references CHAIN_STAGE_RESULT
+alter table BUILDRESULTSUMMARY add constraint FK26506D3BCCACF65 foreign key (MERGERESULT_ID) references MERGE_RESULT
+alter table COMMIT_FILES add constraint FKA9983D4F4D373123 foreign key (COMMIT_ID) references USER_COMMIT
+create index dep_var_subst_type_idx on DEPLOYMENT_VARIABLE_SUBS (VARIABLE_TYPE)
+create index dep_var_subst_result_idx on DEPLOYMENT_VARIABLE_SUBS (DEPLOYMENT_RESULT_ID)
+alter table DEPLOYMENT_VARIABLE_SUBS add constraint FKA2C9E21C7C500F83 foreign key (DEPLOYMENT_RESULT_ID) references DEPLOYMENT_RESULT
+alter table NOTIFICATIONS add constraint FK594ACC8707D72EE foreign key (NOTIFICATION_SET) references NOTIFICATION_SETS
+create index consumerResultSummaryId on BRS_CONSUMED_SUBSCRIPTION (CONSUMER_RESULTSUMMARY_ID)
+create index artifactLinkId on BRS_CONSUMED_SUBSCRIPTION (ARTIFACT_LINK_ID)
+alter table BRS_CONSUMED_SUBSCRIPTION add constraint FKEC405ED8D7E7D97A foreign key (CONSUMER_RESULTSUMMARY_ID) references BUILDRESULTSUMMARY
+alter table BRS_CONSUMED_SUBSCRIPTION add constraint FKEC405ED86EAFB613 foreign key (ARTIFACT_LINK_ID) references BRS_ARTIFACT_LINK
+create index testCase_testClassId_idx on TEST_CASE (TEST_CLASS_ID)
+alter table TEST_CASE add constraint FK617BFABD2170166F foreign key (TEST_CLASS_ID) references TEST_CLASS
+create index dep_ver_vcs_chngset_vcsloc_idx on DEPLOYMENT_VERSION_CHANGESET (VCS_LOCATION_ID)
+create index dep_ver_vcs_changeset_idx on DEPLOYMENT_VERSION_CHANGESET (DEPLOYMENT_VERSION_ID)
+alter table DEPLOYMENT_VERSION_CHANGESET add constraint FKF6AD40D11D68B66C foreign key (VCS_LOCATION_ID) references VCS_LOCATION
+alter table DEPLOYMENT_VERSION_CHANGESET add constraint FKF6AD40D17BD9BBC foreign key (DEPLOYMENT_VERSION_ID) references DEPLOYMENT_VERSION
+create index plan_vcs_plan_key_idx on PLAN_VCS_HISTORY (PLAN_KEY)
+create index plan_vcs_build_number_idx on PLAN_VCS_HISTORY (BUILD_NUMBER)
+alter table VCS_BRANCH add constraint FKA348B0BB83C3FF79 foreign key (CHAIN_ID) references BUILD
+alter table variablesToAutoIncrement add constraint FKF61F414E928CEBA5 foreign key (VERSION_NAMING_SCHEME_ID) references DEPLOYMENT_VERSION_NAMING
+alter table TRUSTED_APPS_IPS add constraint FK257A172793E75E62 foreign key (IP_PATTERN_ID) references TRUSTED_APPS
+create index vrs_status_idx on DEPLOYMENT_VERSION_STATUS (VERSION_STATE)
+create index vrs_st_userName_idx on DEPLOYMENT_VERSION_STATUS (USER_NAME)
+create index version_id_idx on DEPLOYMENT_VERSION_STATUS (DEPLOYMENT_VERSION_ID)
+alter table DEPLOYMENT_VERSION_STATUS add constraint FK85E21E137BD9BBC foreign key (DEPLOYMENT_VERSION_ID) references DEPLOYMENT_VERSION
+create index dep_ver_jiraissues_key_idx on DEPLOYMENT_VERSION_JIRA_ISSUE (JIRA_ISSUE_KEY)
+create index dep_ver_jiraissues_verid_idx on DEPLOYMENT_VERSION_JIRA_ISSUE (DEPLOYMENT_VERSION_ID)
+alter table DEPLOYMENT_VERSION_JIRA_ISSUE add constraint FK80B13A897BD9BBC foreign key (DEPLOYMENT_VERSION_ID) references DEPLOYMENT_VERSION
+create index art_link_artifact_id on BRS_ARTIFACT_LINK (ARTIFACT_ID)
+create index producerJobResultId on BRS_ARTIFACT_LINK (PRODUCERJOBRESULT_ID)
+create index buildResultSummaryId on BRS_ARTIFACT_LINK (BUILDRESULTSUMMARY_ID)
+alter table BRS_ARTIFACT_LINK add constraint FKE1F6D10BA958B29F foreign key (BUILDRESULTSUMMARY_ID) references BUILDRESULTSUMMARY
+alter table BRS_ARTIFACT_LINK add constraint FKE1F6D10B3CF8CEA8 foreign key (ARTIFACT_ID) references ARTIFACT
+alter table BRS_ARTIFACT_LINK add constraint FKE1F6D10B6A657612 foreign key (PRODUCERJOBRESULT_ID) references BUILDRESULTSUMMARY
+create index pkg_item_art_def_idx on DEPLOYMENT_PROJECT_ITEM_BA (ARTIFACT_DEFINITION_ID)
+alter table DEPLOYMENT_PROJECT_ITEM_BA add constraint FK2486042BE12AE48B foreign key (BAM_ARTIFACT_ITEM_ID) references DEPLOYMENT_PROJECT_ITEM
+alter table DEPLOYMENT_PROJECT_ITEM_BA add constraint FK2486042BDEF697DA foreign key (ARTIFACT_DEFINITION_ID) references ARTIFACT_DEFINITION
+create index artifact_plan_key on ARTIFACT (PLAN_KEY, BUILD_NUMBER)
+create table hibernate_unique_key ( next_hi integer )
+INSERT INTO HIBERNATE_UNIQUE_KEY VALUES(0)
+/*C3*/SET SCHEMA PUBLIC
+CONNECT USER SA
+DISCONNECT
+/*C2*/DISCONNECT
+/*C1*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C4*/SET SCHEMA PUBLIC
+CONNECT USER SA
+SET AUTOCOMMIT FALSE
+DELETE FROM HIBERNATE_UNIQUE_KEY WHERE NEXT_HI=0
+INSERT INTO HIBERNATE_UNIQUE_KEY VALUES(1)
+COMMIT
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+DELETE FROM HIBERNATE_UNIQUE_KEY WHERE NEXT_HI=1
+INSERT INTO HIBERNATE_UNIQUE_KEY VALUES(2)
+COMMIT
+SET AUTOCOMMIT TRUE
+/*C1*/INSERT INTO USERS VALUES(1,'admin','{PKCS5S2}9OtUsNbaoBw8uZIHdlWrkdq7/APKZkhfOoNX3fpD/bpstpDonHsPt6CovEoGxUnU','david.ehringer@gmail.com','2015-02-22 21:45:29.888000000','David Ehringer')
+INSERT INTO GROUPS VALUES(32769,'bamboo-admin')
+INSERT INTO LOCAL_MEMBERS VALUES(1,32769)
+/*C4*/SET AUTOCOMMIT FALSE
+DELETE FROM HIBERNATE_UNIQUE_KEY WHERE NEXT_HI=2
+INSERT INTO HIBERNATE_UNIQUE_KEY VALUES(3)
+COMMIT
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+DELETE FROM HIBERNATE_UNIQUE_KEY WHERE NEXT_HI=3
+INSERT INTO HIBERNATE_UNIQUE_KEY VALUES(4)
+COMMIT
+SET AUTOCOMMIT TRUE
+/*C1*/INSERT INTO ACL_OBJECT_IDENTITY VALUES(65537,'com.atlassian.bamboo.security.GlobalApplicationSecureObject',999999,NULL,TRUE,'GROUP_PRINCIPAL','bamboo-admin')
+INSERT INTO ACL_ENTRY VALUES(98305,65537,'GROUP_PRINCIPAL','bamboo-admin',0,16,TRUE,FALSE,FALSE)
+INSERT INTO ACL_ENTRY VALUES(98306,65537,'GROUP_PRINCIPAL','bamboo-admin',0,4,TRUE,FALSE,FALSE)
+INSERT INTO ACL_ENTRY VALUES(98307,65537,'GROUP_PRINCIPAL','bamboo-admin',0,1,TRUE,FALSE,FALSE)
+INSERT INTO ACL_ENTRY VALUES(98308,65537,'GRANTED_AUTHORITY','ROLE_USER',0,1,TRUE,FALSE,FALSE)
+INSERT INTO ACL_ENTRY VALUES(98309,65537,'GRANTED_AUTHORITY','ROLE_ANONYMOUS',0,1,TRUE,FALSE,FALSE)
+DELETE FROM ACL_ENTRY WHERE ID=98305
+INSERT INTO ACL_ENTRY VALUES(98305,65537,'GROUP_PRINCIPAL','bamboo-admin',0,16,TRUE,FALSE,FALSE)
+DELETE FROM ACL_ENTRY WHERE ID=98306
+INSERT INTO ACL_ENTRY VALUES(98306,65537,'GROUP_PRINCIPAL','bamboo-admin',0,4,TRUE,FALSE,FALSE)
+DELETE FROM ACL_ENTRY WHERE ID=98307
+INSERT INTO ACL_ENTRY VALUES(98307,65537,'GROUP_PRINCIPAL','bamboo-admin',0,1,TRUE,FALSE,FALSE)
+DELETE FROM ACL_ENTRY WHERE ID=98308
+INSERT INTO ACL_ENTRY VALUES(98308,65537,'GRANTED_AUTHORITY','ROLE_USER',0,1,TRUE,FALSE,FALSE)
+DELETE FROM ACL_ENTRY WHERE ID=98309
+INSERT INTO ACL_ENTRY VALUES(98309,65537,'GRANTED_AUTHORITY','ROLE_ANONYMOUS',0,1,TRUE,FALSE,FALSE)
+COMMIT
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C4*/SET AUTOCOMMIT FALSE
+/*C5*/SET SCHEMA PUBLIC
+CONNECT USER SA
+SET AUTOCOMMIT FALSE
+DELETE FROM HIBERNATE_UNIQUE_KEY WHERE NEXT_HI=4
+INSERT INTO HIBERNATE_UNIQUE_KEY VALUES(5)
+COMMIT
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+DELETE FROM HIBERNATE_UNIQUE_KEY WHERE NEXT_HI=5
+INSERT INTO HIBERNATE_UNIQUE_KEY VALUES(6)
+COMMIT
+SET AUTOCOMMIT TRUE
+/*C4*/INSERT INTO CAPABILITY_SET VALUES(163841,'LOCAL','AGENT')
+INSERT INTO QUEUE VALUES(131073,'LOCAL','Default Agent','','2015-02-22 21:45:30.171000000','2015-02-22 21:45:30.171000000',TRUE,163841,NULL,NULL,NULL,NULL)
+COMMIT
+SET AUTOCOMMIT TRUE
+/*C1*/SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C4*/SET AUTOCOMMIT FALSE
+DELETE FROM HIBERNATE_UNIQUE_KEY WHERE NEXT_HI=6
+INSERT INTO HIBERNATE_UNIQUE_KEY VALUES(7)
+COMMIT
+SET AUTOCOMMIT TRUE
+/*C1*/INSERT INTO BANDANA VALUES(196609,0,'bamboo.plugin.state','<com.atlassian.plugin.manager.DefaultPluginPersistentState>\u000a  <map class="java.util.Collections$UnmodifiableMap">\u000a    <m/>\u000a  </map>\u000a</com.atlassian.plugin.manager.DefaultPluginPersistentState>')
+COMMIT
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+INSERT INTO BANDANA VALUES(196610,0,'com.atlassian.activeobjects.admin.ActiveObjectsPluginToTablesMapping','<string>{&quot;AO_A0B856_WEB_HOOK_LISTENER_AO&quot;:{&quot;key&quot;:&quot;com.atlassian.webhooks.atlassian-webhooks-plugin&quot;,&quot;name&quot;:&quot;Atlassian WebHooks Plugin&quot;,&quot;version&quot;:&quot;0.17.6&quot;,&quot;vendorName&quot;:&quot;Atlassian&quot;,&quot;vendorUrl&quot;:&quot;http://www.atlassian.com/&quot;}}</string>')
+COMMIT
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+DELETE FROM BANDANA WHERE BANDANA_ID=196610
+INSERT INTO BANDANA VALUES(196610,0,'com.atlassian.activeobjects.admin.ActiveObjectsPluginToTablesMapping','<string>{&quot;AO_38321B_CUSTOM_CONTENT_LINK&quot;:{&quot;key&quot;:&quot;com.atlassian.plugins.atlassian-nav-links-plugin&quot;,&quot;name&quot;:&quot;Atlassian Navigation Links Plugin&quot;,&quot;version&quot;:&quot;3.3.9&quot;,&quot;vendorName&quot;:&quot;Atlassian&quot;,&quot;vendorUrl&quot;:&quot;http://www.atlassian.com/&quot;},&quot;AO_A0B856_WEB_HOOK_LISTENER_AO&quot;:{&quot;key&quot;:&quot;com.atlassian.webhooks.atlassian-webhooks-plugin&quot;,&quot;name&quot;:&quot;Atlassian WebHooks Plugin&quot;,&quot;version&quot;:&quot;0.17.6&quot;,&quot;vendorName&quot;:&quot;Atlassian&quot;,&quot;vendorUrl&quot;:&quot;http://www.atlassian.com/&quot;}}</string>')
+COMMIT
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+DELETE FROM BANDANA WHERE BANDANA_ID=196610
+INSERT INTO BANDANA VALUES(196610,0,'com.atlassian.activeobjects.admin.ActiveObjectsPluginToTablesMapping','<string>{&quot;AO_7A45FB_AOTRACKING_USER&quot;:{&quot;key&quot;:&quot;com.atlassian.bamboo.brokenbuildtracker&quot;,&quot;name&quot;:&quot;Broken Build Responsibility Tracker&quot;,&quot;version&quot;:&quot;5.7.2&quot;,&quot;vendorName&quot;:&quot;Atlassian Software Systems Pty Ltd&quot;,&quot;vendorUrl&quot;:&quot;http://www.atlassian.com&quot;},&quot;AO_38321B_CUSTOM_CONTENT_LINK&quot;:{&quot;key&quot;:&quot;com.atlassian.plugins.atlassian-nav-links-plugin&quot;,&quot;name&quot;:&quot;Atlassian Navigation Links Plugin&quot;,&quot;version&quot;:&quot;3.3.9&quot;,&quot;vendorName&quot;:&quot;Atlassian&quot;,&quot;vendorUrl&quot;:&quot;http://www.atlassian.com/&quot;},&quot;AO_7A45FB_AOTRACKING_RESULT&quot;:{&quot;key&quot;:&quot;com.atlassian.bamboo.brokenbuildtracker&quot;,&quot;name&quot;:&quot;Broken Build Responsibility Tracker&quot;,&quot;version&quot;:&quot;5.7.2&quot;,&quot;vendorName&quot;:&quot;Atlassian Software Systems Pty Ltd&quot;,&quot;vendorUrl&quot;:&quot;http://www.atlassian.com&quot;},&quot;AO_7A45FB_AOTRACKING_ENTRY&quot;:{&quot;key&quot;:&quot;com.atlassian.bamboo.brokenbuildtracker&quot;,&quot;name&quot;:&quot;Broken Build Responsibility Tracker&quot;,&quot;version&quot;:&quot;5.7.2&quot;,&quot;vendorName&quot;:&quot;Atlassian Software Systems Pty Ltd&quot;,&quot;vendorUrl&quot;:&quot;http://www.atlassian.com&quot;},&quot;AO_A0B856_WEB_HOOK_LISTENER_AO&quot;:{&quot;key&quot;:&quot;com.atlassian.webhooks.atlassian-webhooks-plugin&quot;,&quot;name&quot;:&quot;Atlassian WebHooks Plugin&quot;,&quot;version&quot;:&quot;0.17.6&quot;,&quot;vendorName&quot;:&quot;Atlassian&quot;,&quot;vendorUrl&quot;:&quot;http://www.atlassian.com/&quot;}}</string>')
+COMMIT
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C4*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C1*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+CREATE TABLE AO_A0B856_WEB_HOOK_LISTENER_AO (\u000a    ENABLED BOOLEAN,\u000a    EVENTS LONGVARCHAR,\u000a    ID INTEGER GENERATED BY DEFAULT AS IDENTITY (START WITH 1) NOT NULL,\u000a    LAST_UPDATED DATETIME NOT NULL,\u000a    LAST_UPDATED_USER VARCHAR(255),\u000a    NAME LONGVARCHAR NOT NULL,\u000a    PARAMETERS LONGVARCHAR,\u000a    REGISTRATION_METHOD VARCHAR(255) NOT NULL,\u000a    URL LONGVARCHAR NOT NULL,\u000a    PRIMARY KEY(ID)\u000a)
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C4*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C1*/SET AUTOCOMMIT FALSE
+/*C5*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C4*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C5*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C4*/SET AUTOCOMMIT FALSE
+/*C1*/SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C4*/CREATE TABLE AO_7A45FB_AOTRACKING_ENTRY (\u000a    ACTIVE BOOLEAN,\u000a    PLAN_ID BIGINT DEFAULT 0,\u000a    TRACKING_ID INTEGER GENERATED BY DEFAULT AS IDENTITY (START WITH 1) NOT NULL,\u000a    PRIMARY KEY(TRACKING_ID)\u000a)
+CREATE INDEX index_ao_7a45fb_aot979049305 ON AO_7A45FB_AOTRACKING_ENTRY(ACTIVE)
+CREATE TABLE AO_7A45FB_AOTRACKING_RESULT (\u000a    BUILD_NUMBER INTEGER DEFAULT 0,\u000a    LINKED_TRACKING_ENTRY_ID INTEGER,\u000a    RESULT_ID INTEGER GENERATED BY DEFAULT AS IDENTITY (START WITH 1) NOT NULL,\u000a    RESULT_SUMMARY_ID BIGINT DEFAULT 0,\u000a    CONSTRAINT fk_ao_7a45fb_aotracking_result_linked_tracking_entry_id FOREIGN KEY (LINKED_TRACKING_ENTRY_ID) REFERENCES AO_7A45FB_AOTRACKING_ENTRY(TRACKING_ID),\u000a    PRIMARY KEY(RESULT_ID)\u000a)
+CREATE INDEX index_ao_7a45fb_aot1332136998 ON AO_7A45FB_AOTRACKING_RESULT(LINKED_TRACKING_ENTRY_ID)
+CREATE INDEX index_ao_7a45fb_aot57609990 ON AO_7A45FB_AOTRACKING_RESULT(RESULT_SUMMARY_ID)
+CREATE INDEX index_ao_7a45fb_aot189814902 ON AO_7A45FB_AOTRACKING_RESULT(BUILD_NUMBER)
+CREATE TABLE AO_7A45FB_AOTRACKING_USER (\u000a    LINKED_TRACKING_ENTRY_ID INTEGER,\u000a    USERNAME VARCHAR(255),\u000a    USER_ID INTEGER GENERATED BY DEFAULT AS IDENTITY (START WITH 1) NOT NULL,\u000a    USER_WHO_UPDATED VARCHAR(255),\u000a    CONSTRAINT fk_ao_7a45fb_aotracking_user_linked_tracking_entry_id FOREIGN KEY (LINKED_TRACKING_ENTRY_ID) REFERENCES AO_7A45FB_AOTRACKING_ENTRY(TRACKING_ID),\u000a    PRIMARY KEY(USER_ID)\u000a)
+CREATE INDEX index_ao_7a45fb_aot1861572280 ON AO_7A45FB_AOTRACKING_USER(LINKED_TRACKING_ENTRY_ID)
+CREATE INDEX index_ao_7a45fb_aot3191716 ON AO_7A45FB_AOTRACKING_USER(USERNAME)
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C1*/SET AUTOCOMMIT FALSE
+/*C4*/CREATE TABLE AO_38321B_CUSTOM_CONTENT_LINK (\u000a    CONTENT_KEY VARCHAR(255),\u000a    ID INTEGER GENERATED BY DEFAULT AS IDENTITY (START WITH 1) NOT NULL,\u000a    LINK_LABEL VARCHAR(255),\u000a    LINK_URL VARCHAR(255),\u000a    SEQUENCE INTEGER DEFAULT 0,\u000a    PRIMARY KEY(ID)\u000a)
+CREATE INDEX index_ao_38321b_cus1828044926 ON AO_38321B_CUSTOM_CONTENT_LINK(CONTENT_KEY)
+SET AUTOCOMMIT TRUE
+/*C1*/SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C4*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C1*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C4*/SET AUTOCOMMIT FALSE
+DELETE FROM HIBERNATE_UNIQUE_KEY WHERE NEXT_HI=7
+INSERT INTO HIBERNATE_UNIQUE_KEY VALUES(8)
+COMMIT
+SET AUTOCOMMIT TRUE
+/*C1*/INSERT INTO AUDIT_LOG VALUES(229377,1424641549676,'auditLoggingEnabled',NULL,'true','FIELD_CHANGE',NULL,NULL,NULL,NULL,'SYSTEM')
+COMMIT
+SET AUTOCOMMIT TRUE
+/*C4*/SET AUTOCOMMIT FALSE
+INSERT INTO AUDIT_LOG VALUES(229378,1424641549676,'currentApplication.privateKey',NULL,'MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCMOjyD3dd92l6RuQ5nULNkL23blSR3TGS6Ju75xHX6te/vAyUpSxOBkOeQDh+OBcr8aWXUMwMcK7WC98TBqFJuKVoG2R1pnS+F1MsqcgLaw7U6lhZcHjLYQnHJ26tP9zl0nuNOSQ3zwJFK01FJRxBPyiNdglAbVD8i0QZPdnkfSRWjE/LZe3fJfAswAxCtDobWIKQu5wZ+\u2026','FIELD_CHANGE',NULL,NULL,NULL,NULL,'SYSTEM')
+COMMIT
+SET AUTOCOMMIT TRUE
+/*C1*/SET AUTOCOMMIT FALSE
+INSERT INTO AUDIT_LOG VALUES(229379,1424641549676,'currentApplication.applicationId',NULL,'7F000001014BB340E5520D355CBB7687','FIELD_CHANGE',NULL,NULL,NULL,NULL,'SYSTEM')
+COMMIT
+SET AUTOCOMMIT TRUE
+/*C4*/SET AUTOCOMMIT FALSE
+INSERT INTO AUDIT_LOG VALUES(229380,1424641549676,'currentApplication.publicKey',NULL,'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjDo8g93XfdpekbkOZ1CzZC9t25Ukd0xkuibu+cR1+rXv7wMlKUsTgZDnkA4fjgXK/Gll1DMDHCu1gvfEwahSbilaBtkdaZ0vhdTLKnIC2sO1OpYWXB4y2EJxydurT/c5dJ7jTkkN88CRStNRSUcQT8ojXYJQG1Q/ItEGT3Z5H0kVoxPy2Xt3yXwLMAMQrQ6G1iCkLucGfrk9vxnB\u2026','FIELD_CHANGE',NULL,NULL,NULL,NULL,'SYSTEM')
+COMMIT
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C1*/SET AUTOCOMMIT FALSE
+DELETE FROM HIBERNATE_UNIQUE_KEY WHERE NEXT_HI=8
+INSERT INTO HIBERNATE_UNIQUE_KEY VALUES(9)
+COMMIT
+SET AUTOCOMMIT TRUE
+/*C4*/INSERT INTO CAPABILITY_SET VALUES(163842,'LOCAL','SHARED')
+INSERT INTO CAPABILITY VALUES(262145,'system.jdk.JDK 1.7','/var/vcap/data/packages/openjdk-1.7.0_71/c394b4e45a9579c84a82bb53b7f4f65e9c045b83.1-79a7e5d69e59409060e540ad0aa47946b64a87f2',163842)
+INSERT INTO CAPABILITY VALUES(262146,'system.jdk.JDK','/var/vcap/data/packages/openjdk-1.7.0_71/c394b4e45a9579c84a82bb53b7f4f65e9c045b83.1-79a7e5d69e59409060e540ad0aa47946b64a87f2',163842)
+INSERT INTO CAPABILITY VALUES(262147,'system.jdk.JDK 1.7.0_71','/var/vcap/data/packages/openjdk-1.7.0_71/c394b4e45a9579c84a82bb53b7f4f65e9c045b83.1-79a7e5d69e59409060e540ad0aa47946b64a87f2',163842)
+COMMIT
+SET AUTOCOMMIT TRUE
+/*C1*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C4*/SET AUTOCOMMIT FALSE
+/*C1*/SET AUTOCOMMIT FALSE
+/*C5*/SET AUTOCOMMIT FALSE
+/*C1*/SET AUTOCOMMIT TRUE
+/*C5*/SET AUTOCOMMIT TRUE
+/*C4*/INSERT INTO CAPABILITY_SET VALUES(163843,'REMOTE','SHARED')
+COMMIT
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C5*/SET AUTOCOMMIT FALSE
+DELETE FROM HIBERNATE_UNIQUE_KEY WHERE NEXT_HI=9
+INSERT INTO HIBERNATE_UNIQUE_KEY VALUES(10)
+COMMIT
+SET AUTOCOMMIT TRUE
+/*C4*/INSERT INTO CAPABILITY_SET VALUES(163844,'IMAGE','AGENT')
+INSERT INTO CAPABILITY VALUES(262148,'system.builder.node.Node.js 0.10','/opt/node-0.10/bin/node',163844)
+INSERT INTO CAPABILITY VALUES(262149,'system.builder.grailsBuilder.Grails 1.3','/opt/grails-1.3',163844)
+INSERT INTO CAPABILITY VALUES(262150,'system.builder.grailsBuilder.Grails 2.4','/opt/grails-2.4',163844)
+INSERT INTO CAPABILITY VALUES(262151,'system.builder.mvn3.Maven 3.0','/opt/maven-3.0',163844)
+INSERT INTO CAPABILITY VALUES(262152,'system.jdk.JDK 1.7','/opt/jdk-7',163844)
+INSERT INTO CAPABILITY VALUES(262153,'system.builder.phpunit.PHPUnit 3.7','/usr/bin/phpunit-3.7',163844)
+INSERT INTO CAPABILITY VALUES(262154,'system.builder.mvn2.Maven 2.0','/opt/maven-2.0',163844)
+INSERT INTO CAPABILITY VALUES(262155,'system.jdk.JDK 1.6','/opt/jdk-6',163844)
+INSERT INTO CAPABILITY VALUES(262156,'system.builder.ant.Ant 1.9','/opt/ant-1.9',163844)
+INSERT INTO CAPABILITY VALUES(262157,'system.builder.grailsBuilder.Grails 2.1','/opt/grails-2.1',163844)
+INSERT INTO CAPABILITY VALUES(262158,'system.builder.mvn3.Maven 3.2','/opt/maven-3.2',163844)
+INSERT INTO CAPABILITY VALUES(262159,'system.builder.mvn2.Maven 2.1','/opt/maven-2.1',163844)
+INSERT INTO CAPABILITY VALUES(262160,'system.jdk.JDK 1.5','/opt/jdk-5',163844)
+INSERT INTO CAPABILITY VALUES(262161,'system.builder.grailsBuilder.Grails 1.2','/opt/grails-1.2',163844)
+INSERT INTO CAPABILITY VALUES(262162,'system.builder.grailsBuilder.Grails 2.3','/opt/grails-2.3',163844)
+INSERT INTO CAPABILITY VALUES(262163,'system.builder.mvn3.Maven 3.1','/opt/maven-3.1',163844)
+INSERT INTO CAPABILITY VALUES(262164,'system.builder.mvn2.Maven 2','/opt/maven-2.2',163844)
+INSERT INTO CAPABILITY VALUES(262165,'system.builder.grailsBuilder.Grails 2.0','/opt/grails-2.0',163844)
+INSERT INTO CAPABILITY VALUES(262166,'system.builder.grailsBuilder.Grails 2.2','/opt/grails-2.2',163844)
+INSERT INTO CAPABILITY VALUES(262167,'system.hg.executable','/usr/bin/hg',163844)
+INSERT INTO CAPABILITY VALUES(262168,'system.git.executable','/usr/bin/git',163844)
+INSERT INTO CAPABILITY VALUES(262169,'system.builder.mvn2.Maven 2.2','/opt/maven-2.2',163844)
+INSERT INTO CAPABILITY VALUES(262170,'system.builder.phpunit.PHPUnit 3.4','/usr/bin/phpunit-3.4',163844)
+INSERT INTO CAPABILITY VALUES(262171,'system.builder.ant.Ant 1.8','/opt/ant-1.8',163844)
+INSERT INTO ELASTIC_IMAGE VALUES(294913,'S3 x86_64 (linux)','Default Elastic Image Configuration shipped with Bamboo','ami-59e8f230',NULL,'M1_LARGE',NULL,TRUE,FALSE,FALSE,'Linux/UNIX','US_EAST_1','S3','x86_64','linux',NULL,'3.0','Amazon Linux',163844)
+COMMIT
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+INSERT INTO CAPABILITY_SET VALUES(163845,'IMAGE','AGENT')
+INSERT INTO CAPABILITY VALUES(262172,'system.builder.node.Node.js 0.10','/opt/node-0.10/bin/node',163845)
+INSERT INTO CAPABILITY VALUES(262173,'system.builder.grailsBuilder.Grails 1.3','/opt/grails-1.3',163845)
+INSERT INTO CAPABILITY VALUES(262174,'system.builder.grailsBuilder.Grails 2.4','/opt/grails-2.4',163845)
+INSERT INTO CAPABILITY VALUES(262175,'system.builder.mvn3.Maven 3.0','/opt/maven-3.0',163845)
+INSERT INTO CAPABILITY VALUES(262176,'system.jdk.JDK 1.7','/opt/jdk-7',163845)
+INSERT INTO CAPABILITY VALUES(262177,'system.builder.phpunit.PHPUnit 3.7','/usr/bin/phpunit-3.7',163845)
+INSERT INTO CAPABILITY VALUES(262178,'system.builder.mvn2.Maven 2.0','/opt/maven-2.0',163845)
+INSERT INTO CAPABILITY VALUES(262179,'system.jdk.JDK 1.6','/opt/jdk-6',163845)
+INSERT INTO CAPABILITY VALUES(262180,'system.builder.ant.Ant 1.9','/opt/ant-1.9',163845)
+INSERT INTO CAPABILITY VALUES(262181,'system.builder.grailsBuilder.Grails 2.1','/opt/grails-2.1',163845)
+INSERT INTO CAPABILITY VALUES(262182,'system.builder.mvn3.Maven 3.2','/opt/maven-3.2',163845)
+INSERT INTO CAPABILITY VALUES(262183,'system.builder.mvn2.Maven 2.1','/opt/maven-2.1',163845)
+INSERT INTO CAPABILITY VALUES(262184,'system.jdk.JDK 1.5','/opt/jdk-5',163845)
+INSERT INTO CAPABILITY VALUES(262185,'system.builder.grailsBuilder.Grails 1.2','/opt/grails-1.2',163845)
+INSERT INTO CAPABILITY VALUES(262186,'system.builder.grailsBuilder.Grails 2.3','/opt/grails-2.3',163845)
+INSERT INTO CAPABILITY VALUES(262187,'system.builder.mvn3.Maven 3.1','/opt/maven-3.1',163845)
+INSERT INTO CAPABILITY VALUES(262188,'system.builder.mvn2.Maven 2','/opt/maven-2.2',163845)
+INSERT INTO CAPABILITY VALUES(262189,'system.builder.grailsBuilder.Grails 2.0','/opt/grails-2.0',163845)
+INSERT INTO CAPABILITY VALUES(262190,'system.builder.grailsBuilder.Grails 2.2','/opt/grails-2.2',163845)
+INSERT INTO CAPABILITY VALUES(262191,'system.hg.executable','/usr/bin/hg',163845)
+INSERT INTO CAPABILITY VALUES(262192,'system.git.executable','/usr/bin/git',163845)
+INSERT INTO CAPABILITY VALUES(262193,'system.builder.mvn2.Maven 2.2','/opt/maven-2.2',163845)
+INSERT INTO CAPABILITY VALUES(262194,'system.builder.phpunit.PHPUnit 3.4','/usr/bin/phpunit-3.4',163845)
+INSERT INTO CAPABILITY VALUES(262195,'system.builder.ant.Ant 1.8','/opt/ant-1.8',163845)
+INSERT INTO ELASTIC_IMAGE VALUES(294914,'S3 i386 (linux)','Default Elastic Image Configuration shipped with Bamboo','ami-47e8f22e',NULL,'C1_MEDIUM',NULL,TRUE,FALSE,FALSE,'Linux/UNIX','US_EAST_1','S3','i386','linux',NULL,'3.0','Amazon Linux',163845)
+COMMIT
+SET AUTOCOMMIT TRUE
+/*C5*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+INSERT INTO CAPABILITY_SET VALUES(163846,'IMAGE','AGENT')
+INSERT INTO CAPABILITY VALUES(262196,'system.builder.mvn2.Maven 2.2','c:\opt\maven-2.2',163846)
+INSERT INTO CAPABILITY VALUES(262197,'system.hg.executable','c:\Program Files\TortoiseHg\hg.exe',163846)
+INSERT INTO CAPABILITY VALUES(262198,'system.git.executable','c:\Program Files (x86)\Git\bin\git.exe',163846)
+INSERT INTO CAPABILITY VALUES(262199,'system.builder.ant.Ant','c:\opt\ant-1.8',163846)
+INSERT INTO CAPABILITY VALUES(262200,'system.builder.msbuild.MSBuild v4.0 (64bit)','C:\Windows\Microsoft.NET\Framework64\v4.0.30319\MSBuild.exe',163846)
+INSERT INTO CAPABILITY VALUES(262201,'system.jdk.JDK 1.7','c:\Program Files\Java\jdk1.7.0',163846)
+INSERT INTO CAPABILITY VALUES(262202,'system.builder.mvn2.Maven 2.1','c:\opt\maven-2.1',163846)
+INSERT INTO CAPABILITY VALUES(262203,'system.builder.msbuild.MSBuild v2.0 (64bit)','C:\Windows\Microsoft.NET\Framework64\v2.0.50727\MSBuild.exe',163846)
+INSERT INTO CAPABILITY VALUES(262204,'system.builder.msbuild.MSBuild v4.0 (32bit)','C:\Windows\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe',163846)
+INSERT INTO CAPABILITY VALUES(262205,'system.builder.mvn2.Maven 2.0','c:\opt\maven-2.0',163846)
+INSERT INTO CAPABILITY VALUES(262206,'system.builder.msbuild.MSBuild v2.0 (32bit)','C:\Windows\Microsoft.NET\Framework\v2.0.50727\MSBuild.exe',163846)
+INSERT INTO CAPABILITY VALUES(262207,'system.builder.nant.Nant','c:\opt\nant-0.91',163846)
+INSERT INTO CAPABILITY VALUES(262208,'system.builder.mvn3.Maven 3.0','c:\opt\maven-3.0',163846)
+INSERT INTO CAPABILITY VALUES(262209,'system.builder.msbuild.MSBuild v3.5 (64bit)','C:\Windows\Microsoft.NET\Framework64\v3.5\MSBuild.exe',163846)
+INSERT INTO CAPABILITY VALUES(262210,'system.builder.msbuild.MSBuild v3.5 (32bit)','C:\Windows\Microsoft.NET\Framework\v3.5\MSBuild.exe',163846)
+INSERT INTO CAPABILITY VALUES(262211,'system.jdk.JDK 1.6','c:\Program Files\Java\jdk1.6.0',163846)
+INSERT INTO ELASTIC_IMAGE VALUES(294915,'EBS x86_64 (windows)','Default Elastic Image Configuration shipped with Bamboo','ami-976edafe',NULL,'M1_LARGE',NULL,TRUE,FALSE,FALSE,'Windows','US_EAST_1','EBS','x86_64','windows',NULL,'3.0','Windows',163846)
+COMMIT
+SET AUTOCOMMIT TRUE
+/*C4*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+INSERT INTO CAPABILITY_SET VALUES(163847,'IMAGE','AGENT')
+INSERT INTO CAPABILITY VALUES(262212,'system.builder.node.Node.js 0.10','/opt/node-0.10/bin/node',163847)
+INSERT INTO CAPABILITY VALUES(262213,'system.builder.grailsBuilder.Grails 1.3','/opt/grails-1.3',163847)
+INSERT INTO CAPABILITY VALUES(262214,'system.builder.grailsBuilder.Grails 2.4','/opt/grails-2.4',163847)
+INSERT INTO CAPABILITY VALUES(262215,'system.builder.mvn3.Maven 3.0','/opt/maven-3.0',163847)
+INSERT INTO CAPABILITY VALUES(262216,'system.jdk.JDK 1.7','/opt/jdk-7',163847)
+INSERT INTO CAPABILITY VALUES(262217,'system.builder.phpunit.PHPUnit 3.7','/usr/bin/phpunit-3.7',163847)
+INSERT INTO CAPABILITY VALUES(262218,'system.builder.mvn2.Maven 2.0','/opt/maven-2.0',163847)
+INSERT INTO CAPABILITY VALUES(262219,'system.jdk.JDK 1.6','/opt/jdk-6',163847)
+INSERT INTO CAPABILITY VALUES(262220,'system.builder.ant.Ant 1.9','/opt/ant-1.9',163847)
+INSERT INTO CAPABILITY VALUES(262221,'system.builder.grailsBuilder.Grails 2.1','/opt/grails-2.1',163847)
+INSERT INTO CAPABILITY VALUES(262222,'system.builder.mvn3.Maven 3.2','/opt/maven-3.2',163847)
+INSERT INTO CAPABILITY VALUES(262223,'system.builder.mvn2.Maven 2.1','/opt/maven-2.1',163847)
+INSERT INTO CAPABILITY VALUES(262224,'system.jdk.JDK 1.5','/opt/jdk-5',163847)
+INSERT INTO CAPABILITY VALUES(262225,'system.builder.grailsBuilder.Grails 1.2','/opt/grails-1.2',163847)
+INSERT INTO CAPABILITY VALUES(262226,'system.builder.grailsBuilder.Grails 2.3','/opt/grails-2.3',163847)
+INSERT INTO CAPABILITY VALUES(262227,'system.builder.mvn3.Maven 3.1','/opt/maven-3.1',163847)
+INSERT INTO CAPABILITY VALUES(262228,'system.builder.mvn2.Maven 2','/opt/maven-2.2',163847)
+INSERT INTO CAPABILITY VALUES(262229,'system.builder.grailsBuilder.Grails 2.0','/opt/grails-2.0',163847)
+INSERT INTO CAPABILITY VALUES(262230,'system.builder.grailsBuilder.Grails 2.2','/opt/grails-2.2',163847)
+INSERT INTO CAPABILITY VALUES(262231,'system.hg.executable','/usr/bin/hg',163847)
+INSERT INTO CAPABILITY VALUES(262232,'system.git.executable','/usr/bin/git',163847)
+INSERT INTO CAPABILITY VALUES(262233,'system.builder.mvn2.Maven 2.2','/opt/maven-2.2',163847)
+INSERT INTO CAPABILITY VALUES(262234,'system.builder.phpunit.PHPUnit 3.4','/usr/bin/phpunit-3.4',163847)
+INSERT INTO CAPABILITY VALUES(262235,'system.builder.ant.Ant 1.8','/opt/ant-1.8',163847)
+INSERT INTO ELASTIC_IMAGE VALUES(294916,'EBS x86_64 (linux)','Default Elastic Image Configuration shipped with Bamboo','ami-5be8f232',NULL,'M1_LARGE',NULL,TRUE,FALSE,FALSE,'Linux/UNIX','US_EAST_1','EBS','x86_64','linux',NULL,'3.0','Ubuntu',163847)
+COMMIT
+SET AUTOCOMMIT TRUE
+/*C5*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+INSERT INTO CAPABILITY_SET VALUES(163848,'IMAGE','AGENT')
+INSERT INTO CAPABILITY VALUES(262236,'system.builder.node.Node.js 0.10','/opt/node-0.10/bin/node',163848)
+INSERT INTO CAPABILITY VALUES(262237,'system.builder.grailsBuilder.Grails 1.3','/opt/grails-1.3',163848)
+INSERT INTO CAPABILITY VALUES(262238,'system.builder.grailsBuilder.Grails 2.4','/opt/grails-2.4',163848)
+INSERT INTO CAPABILITY VALUES(262239,'system.builder.mvn3.Maven 3.0','/opt/maven-3.0',163848)
+INSERT INTO CAPABILITY VALUES(262240,'system.jdk.JDK 1.7','/opt/jdk-7',163848)
+INSERT INTO CAPABILITY VALUES(262241,'system.builder.phpunit.PHPUnit 3.7','/usr/bin/phpunit-3.7',163848)
+INSERT INTO CAPABILITY VALUES(262242,'system.builder.mvn2.Maven 2.0','/opt/maven-2.0',163848)
+INSERT INTO CAPABILITY VALUES(262243,'system.jdk.JDK 1.6','/opt/jdk-6',163848)
+INSERT INTO CAPABILITY VALUES(262244,'system.builder.ant.Ant 1.9','/opt/ant-1.9',163848)
+INSERT INTO CAPABILITY VALUES(262245,'system.builder.grailsBuilder.Grails 2.1','/opt/grails-2.1',163848)
+INSERT INTO CAPABILITY VALUES(262246,'system.builder.mvn3.Maven 3.2','/opt/maven-3.2',163848)
+INSERT INTO CAPABILITY VALUES(262247,'system.builder.mvn2.Maven 2.1','/opt/maven-2.1',163848)
+INSERT INTO CAPABILITY VALUES(262248,'system.jdk.JDK 1.5','/opt/jdk-5',163848)
+INSERT INTO CAPABILITY VALUES(262249,'system.builder.grailsBuilder.Grails 1.2','/opt/grails-1.2',163848)
+INSERT INTO CAPABILITY VALUES(262250,'system.builder.grailsBuilder.Grails 2.3','/opt/grails-2.3',163848)
+INSERT INTO CAPABILITY VALUES(262251,'system.builder.mvn3.Maven 3.1','/opt/maven-3.1',163848)
+INSERT INTO CAPABILITY VALUES(262252,'system.builder.mvn2.Maven 2','/opt/maven-2.2',163848)
+INSERT INTO CAPABILITY VALUES(262253,'system.builder.grailsBuilder.Grails 2.0','/opt/grails-2.0',163848)
+INSERT INTO CAPABILITY VALUES(262254,'system.builder.grailsBuilder.Grails 2.2','/opt/grails-2.2',163848)
+INSERT INTO CAPABILITY VALUES(262255,'system.hg.executable','/usr/bin/hg',163848)
+INSERT INTO CAPABILITY VALUES(262256,'system.git.executable','/usr/bin/git',163848)
+INSERT INTO CAPABILITY VALUES(262257,'system.builder.mvn2.Maven 2.2','/opt/maven-2.2',163848)
+INSERT INTO CAPABILITY VALUES(262258,'system.builder.phpunit.PHPUnit 3.4','/usr/bin/phpunit-3.4',163848)
+INSERT INTO CAPABILITY VALUES(262259,'system.builder.ant.Ant 1.8','/opt/ant-1.8',163848)
+INSERT INTO ELASTIC_IMAGE VALUES(294917,'EBS x86_64 (linux)','Default Elastic Image Configuration shipped with Bamboo','ami-25f7ed4c',NULL,'M1_LARGE',NULL,TRUE,FALSE,FALSE,'Linux/UNIX','US_EAST_1','EBS','x86_64','linux',NULL,'3.0','Amazon Linux',163848)
+COMMIT
+SET AUTOCOMMIT TRUE
+/*C4*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+INSERT INTO CAPABILITY_SET VALUES(163849,'IMAGE','AGENT')
+INSERT INTO CAPABILITY VALUES(262260,'system.builder.node.Node.js 0.10','/opt/node-0.10/bin/node',163849)
+INSERT INTO CAPABILITY VALUES(262261,'system.builder.grailsBuilder.Grails 1.3','/opt/grails-1.3',163849)
+INSERT INTO CAPABILITY VALUES(262262,'system.builder.grailsBuilder.Grails 2.4','/opt/grails-2.4',163849)
+INSERT INTO CAPABILITY VALUES(262263,'system.builder.mvn3.Maven 3.0','/opt/maven-3.0',163849)
+INSERT INTO CAPABILITY VALUES(262264,'system.jdk.JDK 1.7','/opt/jdk-7',163849)
+INSERT INTO CAPABILITY VALUES(262265,'system.builder.phpunit.PHPUnit 3.7','/usr/bin/phpunit-3.7',163849)
+INSERT INTO CAPABILITY VALUES(262266,'system.builder.mvn2.Maven 2.0','/opt/maven-2.0',163849)
+INSERT INTO CAPABILITY VALUES(262267,'system.jdk.JDK 1.6','/opt/jdk-6',163849)
+INSERT INTO CAPABILITY VALUES(262268,'system.builder.ant.Ant 1.9','/opt/ant-1.9',163849)
+INSERT INTO CAPABILITY VALUES(262269,'system.builder.grailsBuilder.Grails 2.1','/opt/grails-2.1',163849)
+INSERT INTO CAPABILITY VALUES(262270,'system.builder.mvn3.Maven 3.2','/opt/maven-3.2',163849)
+INSERT INTO CAPABILITY VALUES(262271,'system.builder.mvn2.Maven 2.1','/opt/maven-2.1',163849)
+INSERT INTO CAPABILITY VALUES(262272,'system.jdk.JDK 1.5','/opt/jdk-5',163849)
+INSERT INTO CAPABILITY VALUES(262273,'system.builder.grailsBuilder.Grails 1.2','/opt/grails-1.2',163849)
+INSERT INTO CAPABILITY VALUES(262274,'system.builder.grailsBuilder.Grails 2.3','/opt/grails-2.3',163849)
+INSERT INTO CAPABILITY VALUES(262275,'system.builder.mvn3.Maven 3.1','/opt/maven-3.1',163849)
+INSERT INTO CAPABILITY VALUES(262276,'system.builder.mvn2.Maven 2','/opt/maven-2.2',163849)
+INSERT INTO CAPABILITY VALUES(262277,'system.builder.grailsBuilder.Grails 2.0','/opt/grails-2.0',163849)
+INSERT INTO CAPABILITY VALUES(262278,'system.builder.grailsBuilder.Grails 2.2','/opt/grails-2.2',163849)
+INSERT INTO CAPABILITY VALUES(262279,'system.hg.executable','/usr/bin/hg',163849)
+INSERT INTO CAPABILITY VALUES(262280,'system.git.executable','/usr/bin/git',163849)
+INSERT INTO CAPABILITY VALUES(262281,'system.builder.mvn2.Maven 2.2','/opt/maven-2.2',163849)
+INSERT INTO CAPABILITY VALUES(262282,'system.builder.phpunit.PHPUnit 3.4','/usr/bin/phpunit-3.4',163849)
+INSERT INTO CAPABILITY VALUES(262283,'system.builder.ant.Ant 1.8','/opt/ant-1.8',163849)
+INSERT INTO ELASTIC_IMAGE VALUES(294918,'EBS i386 (linux)','Default Elastic Image Configuration shipped with Bamboo','ami-b9ebf1d0',NULL,'C1_MEDIUM',NULL,TRUE,FALSE,FALSE,'Linux/UNIX','US_EAST_1','EBS','i386','linux',NULL,'3.0','Amazon Linux',163849)
+COMMIT
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C5*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C4*/INSERT INTO BANDANA VALUES(196611,0,'com.atlassian.plugins.custom_apps.hasCustomOrder','<string>false</string>')
+/*C5*/SET AUTOCOMMIT FALSE
+/*C1*/SET AUTOCOMMIT FALSE
+INSERT INTO AUDIT_LOG VALUES(229381,1424641550478,'branchDetectionCheckInterval','[0]','[300]','FIELD_CHANGE',NULL,NULL,NULL,NULL,'SYSTEM')
+COMMIT
+SET AUTOCOMMIT TRUE
+/*C4*/INSERT INTO BANDANA VALUES(196612,0,'com.atlassian.plugins.atlassian-nav-links-plugin:build','<string>1</string>')
+/*C1*/SET AUTOCOMMIT FALSE
+INSERT INTO AUDIT_LOG VALUES(229382,1424641550478,'myBuildExpiryConfiguration.expiryTypeNothing',NULL,'false','FIELD_CHANGE',NULL,NULL,NULL,NULL,'SYSTEM')
+COMMIT
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+INSERT INTO AUDIT_LOG VALUES(229383,1424641550478,'myBuildExpiryConfiguration.enabled',NULL,'false','FIELD_CHANGE',NULL,NULL,NULL,NULL,'SYSTEM')
+COMMIT
+SET AUTOCOMMIT TRUE
+/*C5*/SET AUTOCOMMIT TRUE
+/*C6*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C1*/SET AUTOCOMMIT FALSE
+INSERT INTO AUDIT_LOG VALUES(229384,1424641550478,'myBuildExpiryConfiguration.expiryTypeArtifact',NULL,'false','FIELD_CHANGE',NULL,NULL,NULL,NULL,'SYSTEM')
+COMMIT
+SET AUTOCOMMIT TRUE
+/*C6*/SET AUTOCOMMIT FALSE
+INSERT INTO AUDIT_LOG VALUES(229385,1424641550478,'myBuildExpiryConfiguration.myDuration',NULL,'0','FIELD_CHANGE',NULL,NULL,NULL,NULL,'SYSTEM')
+COMMIT
+SET AUTOCOMMIT TRUE
+/*C1*/SET AUTOCOMMIT FALSE
+INSERT INTO AUDIT_LOG VALUES(229386,1424641550478,'myBuildExpiryConfiguration.expiryTypeBuildLog',NULL,'false','FIELD_CHANGE',NULL,NULL,NULL,NULL,'SYSTEM')
+COMMIT
+SET AUTOCOMMIT TRUE
+/*C5*/SET AUTOCOMMIT FALSE
+INSERT INTO AUDIT_LOG VALUES(229387,1424641550478,'myBuildExpiryConfiguration.buildsToKeep',NULL,'0','FIELD_CHANGE',NULL,NULL,NULL,NULL,'SYSTEM')
+COMMIT
+SET AUTOCOMMIT TRUE
+/*C7*/SET SCHEMA PUBLIC
+CONNECT USER SA
+SET AUTOCOMMIT FALSE
+INSERT INTO AUDIT_LOG VALUES(229388,1424641550478,'myBuildExpiryConfiguration.expiryTypeResult',NULL,'false','FIELD_CHANGE',NULL,NULL,NULL,NULL,'SYSTEM')
+COMMIT
+/*C5*/SET AUTOCOMMIT FALSE
+/*C7*/SET AUTOCOMMIT TRUE
+/*C1*/SET AUTOCOMMIT FALSE
+INSERT INTO AUDIT_LOG VALUES(229389,1424641550478,'myBuildExpiryConfiguration.maxIgnoredLogSize',NULL,'-1','FIELD_CHANGE',NULL,NULL,NULL,NULL,'SYSTEM')
+COMMIT
+SET AUTOCOMMIT TRUE
+/*C5*/SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C4*/INSERT INTO BANDANA VALUES(196613,0,'com.atlassian.bamboo.plugins.tomcat.bamboo-tomcat-plugin:build','<string>11</string>')
+/*C5*/SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C4*/INSERT INTO BANDANA VALUES(196614,0,'com.atlassian.bamboo.plugins.bamboo-scp-plugin:build','<string>1</string>')
+/*C5*/SET AUTOCOMMIT TRUE
+/*C1*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C5*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C1*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C5*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C4*/DELETE FROM BANDANA WHERE BANDANA_ID=196614
+INSERT INTO BANDANA VALUES(196614,0,'com.atlassian.bamboo.plugins.bamboo-scp-plugin:build','<string>2</string>')
+INSERT INTO BANDANA VALUES(196615,0,'com.atlassian.upm.atlassian-universal-plugin-manager-plugin:build','<string>1</string>')
+INSERT INTO BANDANA VALUES(196616,0,'com.atlassian.upm.log.PluginSettingsAuditLogService:log:upm_audit_log_v3','<net.sf.hibernate.collection.Bag/>')
+INSERT INTO BANDANA VALUES(196617,0,'com.atlassian.upm.mail.impl.PluginSettingsUserEmailSettingsStore:use78b9c0b572719a68385340a04c056a94','<net.sf.hibernate.collection.Bag/>')
+INSERT INTO BANDANA VALUES(196618,0,'com.atlassian.upm:notifications:dismissal-plugin.request','<net.sf.hibernate.collection.Bag/>')
+INSERT INTO BANDANA VALUES(196619,0,'com.atlassian.upm:notifications:dismissal-update','<net.sf.hibernate.collection.Bag/>')
+INSERT INTO BANDANA VALUES(196620,0,'com.atlassian.upm:notifications:dismissal-evaluation.expired','<net.sf.hibernate.collection.Bag/>')
+INSERT INTO BANDANA VALUES(196621,0,'com.atlassian.upm:notifications:dismissal-evaluation.nearlyexpired','<net.sf.hibernate.collection.Bag/>')
+INSERT INTO BANDANA VALUES(196622,0,'com.atlassian.upm:notifications:dismissal-edition.mismatch','<net.sf.hibernate.collection.Bag/>')
+INSERT INTO BANDANA VALUES(196623,0,'com.atlassian.upm:notifications:dismissal-maintenance.expired','<net.sf.hibernate.collection.Bag/>')
+INSERT INTO BANDANA VALUES(196624,0,'com.atlassian.upm:notifications:dismissal-maintenance.nearlyexpired','<net.sf.hibernate.collection.Bag/>')
+INSERT INTO BANDANA VALUES(196625,0,'com.atlassian.upm:notifications:dismissal-new.licenses','<net.sf.hibernate.collection.Bag/>')
+INSERT INTO BANDANA VALUES(196626,0,'com.atlassian.upm:notifications:dismissal-updated.licenses','<net.sf.hibernate.collection.Bag/>')
+INSERT INTO BANDANA VALUES(196627,0,'com.atlassian.upm:notifications:dismissal-auto.updated.plugin','<net.sf.hibernate.collection.Bag/>')
+INSERT INTO BANDANA VALUES(196628,0,'com.atlassian.upm:notifications:dismissal-auto.updated.upm','<net.sf.hibernate.collection.Bag/>')
+INSERT INTO BANDANA VALUES(196629,0,'com.atlassian.upm.request.PluginSettingsPluginRequestStore:requests:requests_v2','<net.sf.hibernate.collection.Bag/>')
+DELETE FROM BANDANA WHERE BANDANA_ID=196615
+INSERT INTO BANDANA VALUES(196615,0,'com.atlassian.upm.atlassian-universal-plugin-manager-plugin:build','<string>2</string>')
+DELETE FROM BANDANA WHERE BANDANA_ID=196615
+INSERT INTO BANDANA VALUES(196615,0,'com.atlassian.upm.atlassian-universal-plugin-manager-plugin:build','<string>3</string>')
+COMMIT
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C5*/SET AUTOCOMMIT FALSE
+/*C4*/SET AUTOCOMMIT TRUE
+/*C5*/SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+INSERT INTO BANDANA VALUES(196630,0,'com.atlassian.upm:notifications:notification-plugin.request','<net.sf.hibernate.collection.Bag/>')
+COMMIT
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C4*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+INSERT INTO BANDANA VALUES(196631,0,'com.atlassian.upm:notifications:notification-edition.mismatch','<net.sf.hibernate.collection.Bag/>')
+COMMIT
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+INSERT INTO BANDANA VALUES(196632,0,'com.atlassian.upm:notifications:notification-evaluation.expired','<net.sf.hibernate.collection.Bag/>')
+COMMIT
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+INSERT INTO BANDANA VALUES(196633,0,'com.atlassian.upm:notifications:notification-evaluation.nearlyexpired','<net.sf.hibernate.collection.Bag/>')
+COMMIT
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C1*/SET AUTOCOMMIT FALSE
+INSERT INTO BANDANA VALUES(196634,0,'com.atlassian.upm:notifications:notification-maintenance.expired','<net.sf.hibernate.collection.Bag/>')
+COMMIT
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+INSERT INTO BANDANA VALUES(196635,0,'com.atlassian.upm:notifications:notification-maintenance.nearlyexpired','<net.sf.hibernate.collection.Bag/>')
+COMMIT
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+DELETE FROM BANDANA WHERE BANDANA_ID=196621
+COMMIT
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+DELETE FROM BANDANA WHERE BANDANA_ID=196624
+COMMIT
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+DELETE FROM BANDANA WHERE BANDANA_ID=196616
+INSERT INTO BANDANA VALUES(196616,0,'com.atlassian.upm.log.PluginSettingsAuditLogService:log:upm_audit_log_v3','<net.sf.hibernate.collection.Bag>\u000a  <string>{&quot;userKey&quot;:&quot;Bamboo&quot;,&quot;date&quot;:1424641550875,&quot;i18nKey&quot;:&quot;upm.auditLog.upm.startup&quot;,&quot;entryType&quot;:&quot;UPM_STARTUP&quot;,&quot;params&quot;:[]}</string>\u000a</net.sf.hibernate.collection.Bag>')
+COMMIT
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C4*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C6*/SET AUTOCOMMIT FALSE
+/*C4*/SET AUTOCOMMIT TRUE
+/*C6*/SET AUTOCOMMIT TRUE
+/*C4*/SET AUTOCOMMIT FALSE
+/*C7*/SET AUTOCOMMIT FALSE
+/*C4*/SET AUTOCOMMIT TRUE
+/*C7*/SET AUTOCOMMIT TRUE
+/*C6*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C7*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C6*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C7*/SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C6*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C7*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C6*/SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C7*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C6*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C7*/SET AUTOCOMMIT FALSE
+/*C6*/SET AUTOCOMMIT TRUE
+/*C7*/SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C6*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C4*/SET AUTOCOMMIT FALSE
+/*C7*/SET AUTOCOMMIT FALSE
+/*C8*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C7*/SET AUTOCOMMIT TRUE
+/*C9*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C4*/SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C9*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C4*/SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C6*/SET AUTOCOMMIT TRUE
+/*C4*/SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C1*/SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C6*/SET AUTOCOMMIT FALSE
+/*C1*/SET AUTOCOMMIT TRUE
+/*C4*/SET AUTOCOMMIT FALSE
+/*C6*/SET AUTOCOMMIT TRUE
+/*C4*/SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C5*/INSERT INTO BANDANA VALUES(196636,0,'com.atlassian.upm:notifications:notification-update','<net.sf.hibernate.collection.Bag>\u000a  <string>com.atlassian.bamboo.plugins.bamboo-nodejs-plugin</string>\u000a</net.sf.hibernate.collection.Bag>')
+DELETE FROM BANDANA WHERE BANDANA_ID=196619
+COMMIT
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C4*/SET AUTOCOMMIT FALSE
+/*C6*/SET AUTOCOMMIT FALSE
+/*C1*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C6*/SET AUTOCOMMIT TRUE
+/*C5*/SET AUTOCOMMIT TRUE
+/*C4*/SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C5*/SET AUTOCOMMIT FALSE
+/*C4*/SET AUTOCOMMIT TRUE
+/*C5*/SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C4*/SET AUTOCOMMIT FALSE
+/*C5*/SET AUTOCOMMIT TRUE
+/*C4*/SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C5*/SET AUTOCOMMIT FALSE
+INSERT INTO AUDIT_LOG VALUES(229390,1424641564402,'remoteAgentFunctionEnabled','[false]','[true]','FIELD_CHANGE',NULL,NULL,NULL,NULL,'admin')
+COMMIT
+SET AUTOCOMMIT TRUE
+/*C4*/SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C5*/SET AUTOCOMMIT FALSE
+/*C4*/SET AUTOCOMMIT TRUE
+/*C5*/SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C6*/DISCONNECT
+/*C9*/DISCONNECT
+/*C7*/DISCONNECT
+/*C1*/DISCONNECT
+/*C8*/DISCONNECT
+/*C5*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C4*/DISCONNECT
+/*C5*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C10*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C5*/SET AUTOCOMMIT TRUE
+/*C10*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C5*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C10*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C5*/DISCONNECT
+/*C10*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C11*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C10*/SET AUTOCOMMIT TRUE
+/*C11*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C10*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C11*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C10*/DISCONNECT
+/*C11*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C12*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C11*/SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C12*/DISCONNECT
+/*C11*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C13*/SET SCHEMA PUBLIC
+CONNECT USER SA
+SET AUTOCOMMIT FALSE
+/*C11*/SET AUTOCOMMIT TRUE
+/*C14*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C11*/SET AUTOCOMMIT FALSE
+/*C13*/SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C11*/SET AUTOCOMMIT TRUE
+/*C15*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C14*/SET AUTOCOMMIT FALSE
+/*C11*/SET AUTOCOMMIT FALSE
+/*C14*/SET AUTOCOMMIT TRUE
+/*C15*/SET AUTOCOMMIT FALSE
+/*C11*/SET AUTOCOMMIT TRUE
+/*C14*/SET AUTOCOMMIT FALSE
+/*C15*/SET AUTOCOMMIT TRUE
+/*C11*/SET AUTOCOMMIT FALSE
+/*C14*/SET AUTOCOMMIT TRUE
+/*C11*/SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C14*/DISCONNECT
+/*C15*/DISCONNECT
+/*C13*/DISCONNECT
+/*C11*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C16*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C11*/SET AUTOCOMMIT TRUE
+/*C16*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C11*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C16*/DISCONNECT
+/*C11*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C17*/SET SCHEMA PUBLIC
+CONNECT USER SA
+SET AUTOCOMMIT FALSE
+/*C11*/SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C18*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C17*/SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C11*/SET AUTOCOMMIT TRUE
+/*C19*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C18*/SET AUTOCOMMIT FALSE
+/*C19*/SET AUTOCOMMIT FALSE
+/*C18*/SET AUTOCOMMIT TRUE
+/*C11*/SET AUTOCOMMIT FALSE
+/*C19*/SET AUTOCOMMIT TRUE
+/*C18*/SET AUTOCOMMIT FALSE
+/*C11*/SET AUTOCOMMIT TRUE
+/*C19*/SET AUTOCOMMIT FALSE
+/*C18*/SET AUTOCOMMIT TRUE
+/*C19*/SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C18*/DISCONNECT
+/*C11*/DISCONNECT
+/*C17*/DISCONNECT
+/*C19*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C20*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C19*/SET AUTOCOMMIT TRUE
+/*C20*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C19*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C20*/DISCONNECT
+/*C19*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C21*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C19*/SET AUTOCOMMIT TRUE
+/*C21*/SET AUTOCOMMIT FALSE
+/*C22*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C21*/SET AUTOCOMMIT TRUE
+/*C19*/SET AUTOCOMMIT FALSE
+/*C22*/SET AUTOCOMMIT FALSE
+/*C19*/SET AUTOCOMMIT TRUE
+/*C21*/SET AUTOCOMMIT FALSE
+/*C22*/SET AUTOCOMMIT TRUE
+/*C19*/SET AUTOCOMMIT FALSE
+/*C21*/SET AUTOCOMMIT TRUE
+/*C22*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C19*/SET AUTOCOMMIT TRUE
+/*C21*/SET AUTOCOMMIT FALSE
+/*C23*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C19*/SET AUTOCOMMIT FALSE
+/*C21*/SET AUTOCOMMIT TRUE
+/*C19*/SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+DISCONNECT
+/*C23*/DISCONNECT
+/*C22*/DISCONNECT
+/*C21*/DISCONNECT
+/*C24*/SET SCHEMA PUBLIC
+CONNECT USER SA
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+INSERT INTO BANDANA VALUES(196637,0,'expiry.build.lastRun','<date>1424649951004</date>')
+COMMIT
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+INSERT INTO BANDANA VALUES(196638,0,'expiry.build.lastFinished','<date>1424649951013</date>')
+COMMIT
+SET AUTOCOMMIT TRUE
+/*C25*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C24*/SET AUTOCOMMIT FALSE
+INSERT INTO BANDANA VALUES(196639,0,'expiry.build.successful','<boolean>true</boolean>')
+COMMIT
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C25*/DISCONNECT
+/*C24*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C26*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C24*/SET AUTOCOMMIT TRUE
+/*C26*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C24*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C26*/DISCONNECT
+/*C24*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C27*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C24*/SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C27*/SET AUTOCOMMIT FALSE
+/*C24*/SET AUTOCOMMIT TRUE
+/*C28*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C24*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C27*/SET AUTOCOMMIT TRUE
+/*C28*/SET AUTOCOMMIT FALSE
+/*C27*/SET AUTOCOMMIT FALSE
+/*C29*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C28*/SET AUTOCOMMIT TRUE
+/*C27*/SET AUTOCOMMIT TRUE
+/*C24*/SET AUTOCOMMIT FALSE
+/*C29*/SET AUTOCOMMIT FALSE
+/*C24*/SET AUTOCOMMIT TRUE
+/*C29*/SET AUTOCOMMIT TRUE
+/*C27*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C29*/DISCONNECT
+/*C28*/DISCONNECT
+/*C24*/DISCONNECT
+/*C27*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C30*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C27*/SET AUTOCOMMIT TRUE
+/*C30*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C27*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C30*/DISCONNECT
+/*C27*/DISCONNECT
+/*C31*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C32*/SET SCHEMA PUBLIC
+CONNECT USER SA
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C31*/SET AUTOCOMMIT FALSE
+/*C32*/SET AUTOCOMMIT TRUE
+/*C33*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C31*/SET AUTOCOMMIT TRUE
+/*C32*/SET AUTOCOMMIT FALSE
+/*C33*/SET AUTOCOMMIT FALSE
+/*C32*/SET AUTOCOMMIT TRUE
+/*C33*/SET AUTOCOMMIT TRUE
+/*C31*/SET AUTOCOMMIT FALSE
+/*C33*/SET AUTOCOMMIT FALSE
+/*C34*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C31*/SET AUTOCOMMIT TRUE
+/*C34*/SET AUTOCOMMIT FALSE
+/*C33*/SET AUTOCOMMIT TRUE
+/*C31*/SET AUTOCOMMIT FALSE
+/*C34*/SET AUTOCOMMIT TRUE
+/*C33*/SET AUTOCOMMIT FALSE
+/*C31*/SET AUTOCOMMIT TRUE
+/*C33*/SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C31*/DISCONNECT
+/*C34*/DISCONNECT
+/*C32*/DISCONNECT
+/*C33*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C35*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C33*/SET AUTOCOMMIT TRUE
+/*C35*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C33*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C35*/DISCONNECT
+/*C33*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C36*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C33*/SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C36*/SET AUTOCOMMIT FALSE
+/*C33*/SET AUTOCOMMIT TRUE
+/*C36*/SET AUTOCOMMIT TRUE
+/*C33*/SET AUTOCOMMIT FALSE
+/*C37*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C38*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C33*/SET AUTOCOMMIT TRUE
+/*C38*/SET AUTOCOMMIT FALSE
+/*C37*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C38*/SET AUTOCOMMIT TRUE
+/*C36*/SET AUTOCOMMIT FALSE
+/*C33*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C36*/SET AUTOCOMMIT TRUE
+/*C38*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C36*/DISCONNECT
+/*C33*/DISCONNECT
+/*C37*/DISCONNECT
+/*C38*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C39*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C38*/SET AUTOCOMMIT TRUE
+/*C39*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C38*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C39*/DISCONNECT
+/*C38*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C40*/SET SCHEMA PUBLIC
+CONNECT USER SA
+SET AUTOCOMMIT FALSE
+/*C38*/SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C41*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C40*/SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C38*/SET AUTOCOMMIT TRUE
+/*C42*/SET SCHEMA PUBLIC
+CONNECT USER SA
+SET AUTOCOMMIT FALSE
+/*C41*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C40*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C42*/SET AUTOCOMMIT TRUE
+/*C40*/SET AUTOCOMMIT FALSE
+/*C41*/SET AUTOCOMMIT FALSE
+/*C40*/SET AUTOCOMMIT TRUE
+/*C41*/SET AUTOCOMMIT TRUE
+/*C42*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C41*/DISCONNECT
+/*C40*/DISCONNECT
+/*C38*/DISCONNECT
+/*C42*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C43*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C42*/SET AUTOCOMMIT TRUE
+/*C43*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C42*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C43*/DISCONNECT
+/*C42*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C44*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C42*/SET AUTOCOMMIT TRUE
+/*C44*/SET AUTOCOMMIT FALSE
+/*C45*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C44*/SET AUTOCOMMIT TRUE
+/*C42*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C46*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C45*/SET AUTOCOMMIT FALSE
+/*C46*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C42*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C45*/SET AUTOCOMMIT TRUE
+/*C46*/SET AUTOCOMMIT FALSE
+/*C42*/SET AUTOCOMMIT FALSE
+/*C46*/SET AUTOCOMMIT TRUE
+/*C42*/SET AUTOCOMMIT TRUE
+/*C44*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C46*/DISCONNECT
+/*C42*/DISCONNECT
+/*C45*/DISCONNECT
+/*C44*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C47*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C44*/SET AUTOCOMMIT TRUE
+/*C47*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C44*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C47*/DISCONNECT
+/*C44*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C48*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C44*/SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C48*/SET AUTOCOMMIT FALSE
+/*C44*/SET AUTOCOMMIT TRUE
+/*C49*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C44*/SET AUTOCOMMIT FALSE
+/*C48*/SET AUTOCOMMIT TRUE
+/*C44*/SET AUTOCOMMIT TRUE
+/*C48*/SET AUTOCOMMIT FALSE
+/*C50*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C49*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C48*/SET AUTOCOMMIT TRUE
+/*C50*/SET AUTOCOMMIT FALSE
+/*C48*/SET AUTOCOMMIT FALSE
+/*C50*/SET AUTOCOMMIT TRUE
+/*C48*/SET AUTOCOMMIT TRUE
+/*C49*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C48*/DISCONNECT
+/*C50*/DISCONNECT
+/*C44*/DISCONNECT
+/*C49*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C51*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C49*/SET AUTOCOMMIT TRUE
+/*C51*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C49*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C51*/DISCONNECT
+/*C49*/DISCONNECT
+/*C52*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C53*/SET SCHEMA PUBLIC
+CONNECT USER SA
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C52*/SET AUTOCOMMIT FALSE
+/*C53*/SET AUTOCOMMIT TRUE
+/*C54*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C52*/SET AUTOCOMMIT TRUE
+/*C53*/SET AUTOCOMMIT FALSE
+/*C54*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C53*/SET AUTOCOMMIT TRUE
+/*C52*/SET AUTOCOMMIT FALSE
+/*C53*/SET AUTOCOMMIT FALSE
+/*C55*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C52*/SET AUTOCOMMIT TRUE
+/*C53*/SET AUTOCOMMIT TRUE
+/*C54*/SET AUTOCOMMIT FALSE
+/*C55*/SET AUTOCOMMIT FALSE
+/*C54*/SET AUTOCOMMIT TRUE
+/*C55*/SET AUTOCOMMIT TRUE
+/*C54*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C55*/DISCONNECT
+/*C53*/DISCONNECT
+/*C52*/DISCONNECT
+/*C54*/DISCONNECT
+/*C56*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C57*/SET SCHEMA PUBLIC
+CONNECT USER SA
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C56*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C57*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C56*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C57*/DISCONNECT
+/*C56*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C58*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C59*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C56*/SET AUTOCOMMIT FALSE
+/*C58*/SET AUTOCOMMIT FALSE
+/*C56*/SET AUTOCOMMIT TRUE
+/*C59*/SET AUTOCOMMIT FALSE
+/*C58*/SET AUTOCOMMIT TRUE
+/*C56*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C59*/SET AUTOCOMMIT TRUE
+/*C58*/SET AUTOCOMMIT FALSE
+/*C60*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C58*/SET AUTOCOMMIT TRUE
+/*C59*/SET AUTOCOMMIT FALSE
+/*C60*/SET AUTOCOMMIT FALSE
+/*C59*/SET AUTOCOMMIT TRUE
+/*C60*/SET AUTOCOMMIT TRUE
+/*C59*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C60*/DISCONNECT
+/*C58*/DISCONNECT
+/*C56*/DISCONNECT
+/*C59*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C61*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C59*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C61*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C59*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C61*/DISCONNECT
+/*C59*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C62*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C59*/SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C62*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C59*/SET AUTOCOMMIT TRUE
+/*C62*/SET AUTOCOMMIT FALSE
+/*C59*/SET AUTOCOMMIT FALSE
+/*C62*/SET AUTOCOMMIT TRUE
+/*C59*/SET AUTOCOMMIT TRUE
+/*C63*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C64*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C59*/SET AUTOCOMMIT FALSE
+/*C63*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C59*/SET AUTOCOMMIT TRUE
+/*C64*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C59*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C64*/DISCONNECT
+/*C63*/DISCONNECT
+/*C62*/DISCONNECT
+/*C59*/DISCONNECT
+/*C65*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C66*/SET SCHEMA PUBLIC
+CONNECT USER SA
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C65*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C66*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C65*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C66*/DISCONNECT
+/*C65*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C67*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C68*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C65*/SET AUTOCOMMIT TRUE
+/*C68*/SET AUTOCOMMIT FALSE
+/*C65*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C68*/SET AUTOCOMMIT TRUE
+/*C69*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C68*/SET AUTOCOMMIT FALSE
+/*C67*/SET AUTOCOMMIT FALSE
+/*C68*/SET AUTOCOMMIT TRUE
+/*C67*/SET AUTOCOMMIT TRUE
+/*C65*/SET AUTOCOMMIT FALSE
+/*C69*/SET AUTOCOMMIT FALSE
+/*C65*/SET AUTOCOMMIT TRUE
+/*C69*/SET AUTOCOMMIT TRUE
+/*C65*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C69*/DISCONNECT
+/*C67*/DISCONNECT
+/*C68*/DISCONNECT
+/*C65*/DISCONNECT
+/*C70*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C71*/SET SCHEMA PUBLIC
+CONNECT USER SA
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C70*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C71*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C70*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C71*/DISCONNECT
+/*C70*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C72*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C70*/SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C72*/SET AUTOCOMMIT FALSE
+/*C70*/SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C72*/SET AUTOCOMMIT TRUE
+/*C73*/SET SCHEMA PUBLIC
+CONNECT USER SA
+SET AUTOCOMMIT FALSE
+/*C70*/SET AUTOCOMMIT TRUE
+/*C72*/SET AUTOCOMMIT FALSE
+/*C73*/SET AUTOCOMMIT TRUE
+/*C70*/SET AUTOCOMMIT FALSE
+/*C72*/SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C70*/SET AUTOCOMMIT TRUE
+/*C73*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C70*/DISCONNECT
+/*C72*/DISCONNECT
+/*C73*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C74*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C73*/SET AUTOCOMMIT TRUE
+/*C74*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C73*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C74*/DISCONNECT
+/*C73*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C75*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C73*/SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C75*/SET AUTOCOMMIT FALSE
+/*C73*/SET AUTOCOMMIT TRUE
+/*C76*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C73*/SET AUTOCOMMIT FALSE
+/*C75*/SET AUTOCOMMIT TRUE
+/*C76*/SET AUTOCOMMIT FALSE
+/*C73*/SET AUTOCOMMIT TRUE
+/*C75*/SET AUTOCOMMIT FALSE
+/*C76*/SET AUTOCOMMIT TRUE
+/*C75*/SET AUTOCOMMIT TRUE
+/*C73*/SET AUTOCOMMIT FALSE
+/*C77*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C75*/SET AUTOCOMMIT FALSE
+/*C73*/SET AUTOCOMMIT TRUE
+/*C77*/SET AUTOCOMMIT FALSE
+/*C75*/SET AUTOCOMMIT TRUE
+/*C77*/SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C75*/DISCONNECT
+/*C73*/DISCONNECT
+/*C76*/DISCONNECT
+/*C77*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C78*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C77*/SET AUTOCOMMIT TRUE
+/*C78*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C77*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C78*/DISCONNECT
+/*C77*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C79*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C77*/SET AUTOCOMMIT TRUE
+/*C80*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C77*/SET AUTOCOMMIT FALSE
+/*C79*/SET AUTOCOMMIT FALSE
+/*C77*/SET AUTOCOMMIT TRUE
+/*C80*/SET AUTOCOMMIT FALSE
+/*C79*/SET AUTOCOMMIT TRUE
+/*C77*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C80*/SET AUTOCOMMIT TRUE
+/*C79*/SET AUTOCOMMIT FALSE
+/*C80*/SET AUTOCOMMIT FALSE
+/*C81*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C79*/SET AUTOCOMMIT TRUE
+/*C81*/SET AUTOCOMMIT FALSE
+/*C80*/SET AUTOCOMMIT TRUE
+/*C81*/SET AUTOCOMMIT TRUE
+/*C80*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C81*/DISCONNECT
+/*C79*/DISCONNECT
+/*C77*/DISCONNECT
+/*C80*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C82*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C80*/SET AUTOCOMMIT TRUE
+/*C82*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C80*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C82*/DISCONNECT
+/*C80*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C83*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C80*/SET AUTOCOMMIT TRUE
+/*C83*/SET AUTOCOMMIT FALSE
+/*C80*/SET AUTOCOMMIT FALSE
+/*C83*/SET AUTOCOMMIT TRUE
+/*C80*/SET AUTOCOMMIT TRUE
+/*C84*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C85*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C80*/SET AUTOCOMMIT FALSE
+/*C84*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C80*/SET AUTOCOMMIT TRUE
+/*C83*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C80*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C83*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C85*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C83*/DISCONNECT
+/*C80*/DISCONNECT
+/*C84*/DISCONNECT
+/*C85*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C86*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C85*/SET AUTOCOMMIT TRUE
+/*C86*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C85*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C86*/DISCONNECT
+/*C85*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C87*/SET SCHEMA PUBLIC
+CONNECT USER SA
+SET AUTOCOMMIT FALSE
+/*C85*/SET AUTOCOMMIT TRUE
+/*C88*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C87*/SET AUTOCOMMIT TRUE
+/*C85*/SET AUTOCOMMIT FALSE
+/*C87*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C85*/SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C89*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C88*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C85*/SET AUTOCOMMIT TRUE
+/*C89*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C85*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C89*/DISCONNECT
+/*C88*/DISCONNECT
+/*C87*/DISCONNECT
+/*C85*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C90*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C85*/SET AUTOCOMMIT TRUE
+/*C90*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C85*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C90*/DISCONNECT
+/*C85*/DISCONNECT
+/*C91*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C92*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C91*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C92*/SET AUTOCOMMIT FALSE
+/*C93*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C91*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C92*/SET AUTOCOMMIT TRUE
+/*C91*/SET AUTOCOMMIT FALSE
+/*C93*/SET AUTOCOMMIT FALSE
+/*C94*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C93*/SET AUTOCOMMIT TRUE
+/*C91*/SET AUTOCOMMIT TRUE
+/*C93*/SET AUTOCOMMIT FALSE
+/*C94*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C93*/SET AUTOCOMMIT TRUE
+/*C91*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C93*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C91*/DISCONNECT
+/*C94*/DISCONNECT
+/*C92*/DISCONNECT
+/*C93*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C95*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C93*/SET AUTOCOMMIT TRUE
+/*C95*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C93*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C95*/DISCONNECT
+/*C93*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+/*C96*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C93*/SET AUTOCOMMIT TRUE
+/*C96*/SET AUTOCOMMIT FALSE
+/*C93*/SET AUTOCOMMIT FALSE
+/*C96*/SET AUTOCOMMIT TRUE
+/*C93*/SET AUTOCOMMIT TRUE
+/*C97*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C93*/SET AUTOCOMMIT FALSE
+/*C96*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C93*/SET AUTOCOMMIT TRUE
+/*C98*/SET SCHEMA PUBLIC
+CONNECT USER SA
+/*C93*/SET AUTOCOMMIT FALSE
+/*C97*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C93*/SET AUTOCOMMIT TRUE
+/*C98*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+/*C93*/SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE
+SET AUTOCOMMIT FALSE
+SET AUTOCOMMIT TRUE

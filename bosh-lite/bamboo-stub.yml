@@ -1,0 +1,9 @@
+---
+director_uuid: PLACEHOLDER-DIRECTOR-UUID
+
+properties:
+  bamboo:
+    network: default
+    license: AAABEw0ODAoPeNptkE9vgkAQxe/7KTbpeRtAoEKyB4XVkCAaoOmf9LLgVDcpK5kFUr99FWvamh7mM i/v9+bNXSE7uoCK2i61/NBxQ2dKo6KkjmV7JAZTo2o7ddB8LpvqcKBCd4AtKgNvIRWD/OjlWSZZ3 1SA6/dHA2i445EIYVRi2QE/05jlMNslPx7eYQ+kGrn3su7UAJfVSqpTipa6BvHZKjz+YkyY7V89q apBGxBbNeJEVop8kyeFIGvcSa3MJSaWg9pSsUeld4CkABwAk5jPveUDe148zVgZvPgsfbWWpBAZP w1LPSeYusHkJqo8tpDJBni0Xq1EHiWzlHxLJ2CaxH+81/v+7bDpsd5LA7f/+QIiioBwMC0CFDwtz ckYndRepc/bJJ+nStFU1VunAhUAglCI9l8/bP0m6OF4K5iqm2QNvrk=X02e2
+  server:
+    ip: 10.244.2.2

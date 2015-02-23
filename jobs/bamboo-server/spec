@@ -1,0 +1,12 @@
+---
+name: bamboo-server
+templates:
+  ctl.erb: bin/ctl
+  bamboo-init.properties: config/bamboo-init.properties
+  bamboo.cfg.xml: config/bamboo.cfg.xml
+  defaultdb.log: database/defaultdb.log
+  defaultdb.properties: database/defaultdb.properties
+
+packages:
+- atlassian-bamboo-5.7.2
+- openjdk-1.7.0_71

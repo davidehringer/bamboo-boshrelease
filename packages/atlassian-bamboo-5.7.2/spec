@@ -1,0 +1,9 @@
+---
+name: atlassian-bamboo-5.7.2
+
+dependencies:
+- openjdk-1.7.0_71
+
+files:
+- atlassian-bamboo-5.7.2/atlassian-bamboo-5.7.2.tar.gz
+- bamboo-home/bamboo-home.tar.gz
